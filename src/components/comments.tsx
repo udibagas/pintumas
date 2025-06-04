@@ -69,7 +69,9 @@ function CommentList({ comments }: { comments: Comment[] }) {
             <div className="font-bold">{comment.author?.name ?? 'Anonim'}</div>
             <div className="text-xs text-muted-foreground"> {moment(comment.createdAt).fromNow()}</div>
           </div>
-          <p className="text-sm text-muted-foreground mt-2">{comment.content}</p>
+          <p className="text-sm text-muted-foreground mt-2 whitespace-pre-line">
+            {comment.content}
+          </p>
         </li>
       ))}
     </ul>

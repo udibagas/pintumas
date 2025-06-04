@@ -31,6 +31,6 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
 
   return (
-    <PostCard post={post} />
+    <PostCard post={post} detail />
   )
 }

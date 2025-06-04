@@ -5,19 +5,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Post } from "@/types";
 import Comments from "./comments";
 import Link from "next/link";
-import { Eye, MessageCircle, Share2, ThumbsUp } from "lucide-react";
 import { useState } from "react";
+import PostAction from "./post-action";
 
-export default function PostCard({ post }: { post: Post }) {
+export default function PostCard({ post, detail = false }: { post: Post, detail?: boolean }) {
   const [showComments, setShowComments] = useState(false);
+  const [showDetail, setShowDetail] = useState(detail);
 
   return (
     <Card key={post.id}>
       <CardHeader>
         <CardTitle className="text-3xl">
-          <Link href={`/posts/${post.slug}`} className="hover:underline">
+          {detail ? post.title : <Link href={`/posts/${post.slug}`} className="hover:underline">
             {post.title}
-          </Link>
+          </Link>}
         </CardTitle>
         <CardDescription>
           {post.author.name} &bull; {post.category?.name || "Uncategorized"} &bull;
@@ -53,29 +54,18 @@ export default function PostCard({ post }: { post: Post }) {
           ))}
         </div>}
 
-        <p className="mb-4 border border-slate-200 p-4 rounded-lg">{post.content}</p>
+        {!showDetail && <p className="bg-muted mb-4 p-4 rounded-lg whitespace-pre-line">
+          {post.excerpt} <br />
+          <span className="text-blue-500 cursor-pointer text-sm" onClick={() => setShowDetail(true)}>
+            Baca Selengkapnya
+          </span>
+        </p>}
 
-        <div className="flex items-center justify-between text-sm text-muted-foreground bg-muted mb-4 py-4 px-8 rounded-lg">
-          <div className="flex items-center gap-2">
-            <Eye className="text-blue-400 size-4" />
-            <span>{post.viewCount ?? '0'}x Dilihat</span>
-          </div>
+        {showDetail && <p className="bg-muted mb-4 p-4 rounded-lg whitespace-pre-line">
+          {post.content}
+        </p>}
 
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setShowComments(!showComments)}>
-            <MessageCircle className=" text-blue-400 size-4" />
-            <span>{post.commentCount ?? 0} Komentar</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <ThumbsUp className="cursor-pointer text-blue-400 size-4" />
-            <span>{post.likeCount ?? 0} Menyukai</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Share2 className="cursor-pointer text-blue-400 size-4" />
-            <span>Bagikan</span>
-          </div>
-        </div>
+        <PostAction post={post} setShowComments={setShowComments} showComments={showComments} />
 
         {showComments && <Comments postId={post.id} />}
       </CardContent>
