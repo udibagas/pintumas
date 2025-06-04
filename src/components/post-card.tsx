@@ -7,6 +7,7 @@ import Comments from "./comments";
 import Link from "next/link";
 import { useState } from "react";
 import PostAction from "./post-action";
+import { ArrowRight } from "lucide-react";
 
 export default function PostCard({ post, detail = false }: { post: Post, detail?: boolean }) {
   const [showComments, setShowComments] = useState(false);
@@ -54,16 +55,13 @@ export default function PostCard({ post, detail = false }: { post: Post, detail?
           ))}
         </div>}
 
-        {!showDetail && <p className="bg-muted mb-4 p-4 rounded-lg whitespace-pre-line">
-          {post.excerpt} <br />
-          <span className="text-blue-500 cursor-pointer text-sm" onClick={() => setShowDetail(true)}>
-            Baca Selengkapnya
-          </span>
-        </p>}
-
-        {showDetail && <p className="bg-muted mb-4 p-4 rounded-lg whitespace-pre-line">
-          {post.content}
-        </p>}
+        <p className="bg-muted mb-4 p-4 rounded-lg whitespace-pre-line text-muted-foreground">
+          {showDetail && post.content}
+          {!showDetail && post.excerpt}
+          {!showDetail && <div className="text-blue-500 cursor-pointer text-sm" onClick={() => setShowDetail(true)}>
+            Baca Selengkapnya <ArrowRight className="inline size-4" />
+          </div>}
+        </p>
 
         <PostAction post={post} setShowComments={setShowComments} showComments={showComments} />
 
