@@ -15,14 +15,14 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <div className="container mx-auto py-8 flex">
-        <aside className="w-64 hidden lg:block px-4 lg:px-8">
+      <div className="container max-w-2/3 mx-auto py-8 flex">
+        <aside className="w-64 hidden lg:block">
           <div className="bg-muted p-4 rounded-xl">
             Ini nanti sidebar
           </div>
           {/* Sidebar content can go here */}
         </aside>
-        <div className="flex-1 px-4 lg:px-8">
+        <div className="flex-1 px-4">
           {/* Main content area */}
           <div className="grid gap-6">
             {children}

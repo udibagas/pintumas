@@ -14,7 +14,7 @@ export default function PostCard({ post, detail = false }: { post: Post, detail?
   const [showDetail, setShowDetail] = useState(detail);
 
   return (
-    <Card key={post.id}>
+    <Card>
       <CardHeader>
         <CardTitle className="text-3xl">
           {detail ? post.title : <Link href={`/posts/${post.slug}`} className="hover:underline">
@@ -55,13 +55,13 @@ export default function PostCard({ post, detail = false }: { post: Post, detail?
           ))}
         </div>}
 
-        <p className="bg-muted mb-4 p-4 rounded-lg whitespace-pre-line text-muted-foreground">
+        <div className="bg-muted mb-4 p-4 rounded-lg whitespace-pre-line text-muted-foreground">
           {showDetail && post.content}
           {!showDetail && post.excerpt}
-          {!showDetail && <div className="text-blue-500 cursor-pointer text-sm" onClick={() => setShowDetail(true)}>
+          {!showDetail && <div className="text-blue-500 cursor-pointer text-sm mt-4" onClick={() => setShowDetail(true)}>
             Baca Selengkapnya <ArrowRight className="inline size-4" />
           </div>}
-        </p>
+        </div>
 
         <PostAction post={post} setShowComments={setShowComments} showComments={showComments} />
 
