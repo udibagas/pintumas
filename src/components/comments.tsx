@@ -2,49 +2,38 @@
 
 import { Comment } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { useEffect, useState } from "react";
 import CommentForm from "./comment-form";
 import moment from "moment";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function Comments({ postId }: { postId: number }) {
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    async function fetchComments() {
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/comments?postId=${postId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+  const { isPending, data: comments } = useQuery({
+    queryKey: ['comments', postId],
+    queryFn: async () => {
+      const response = await fetch(`/api/comments?postId=${postId}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', },
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch comments');
-        }
-
-        const data = await response.json();
-        setComments(data);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error('Failed to fetch comments');
       }
-    }
 
-    fetchComments();
-  }, [postId]);
+      return response.json();
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 
   return (
     <>
-      <CommentForm postId={postId} onCommentAdded={(comment) => {
-        setComments((prevComments) => [comment, ...prevComments]);
-      }} />
+      <CommentForm postId={postId} onCommentAdded={() => queryClient.invalidateQueries({
+        queryKey: ['comments', postId],
+      })} />
 
       <div className="mt-4">
-        {loading ? 'Memuat komentar...' : <CommentList comments={comments} />}
+        {isPending ? <p className="text-muted-foreground">Memuat komentar...</p> : <CommentList comments={comments} />}
       </div>
     </>
   )

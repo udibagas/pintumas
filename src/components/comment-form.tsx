@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { LogIn, Send } from "lucide-react";
 import { redirect } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CommentForm({
   postId,
@@ -13,6 +14,8 @@ export default function CommentForm({
   postId: number;
   onCommentAdded: (comment: Comment) => void;
 }) {
+  const queryClient = useQueryClient();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -36,6 +39,10 @@ export default function CommentForm({
 
       const comment = await response.json();
       onCommentAdded(comment);
+
+      queryClient.invalidateQueries({
+        queryKey: ['comments', postId],
+      });
       form.reset()
     } catch (error) {
       console.error("Error adding comment:", error);
@@ -70,9 +77,9 @@ export default function CommentForm({
           Masuk untuk mengirim komentar
         </Button>
 
-        <p className="text-sm text-muted-foreground mt-2">
+        {/* <p className="text-sm text-muted-foreground mt-2">
           Komentar Anda akan ditampilkan setelah disetujui oleh moderator.
-        </p>
+        </p> */}
       </div>
     </form>
   );

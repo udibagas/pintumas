@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Pusat Informasi",
 };
 
-export default function RootLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
