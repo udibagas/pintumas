@@ -36,6 +36,13 @@ export default function PostTable() {
       render: (_text: string, record: Post & { author?: User, category?: Category, department?: Department, media?: Media[] }) => <PostDetail {...record} />,
     },
     {
+      title: "Featured",
+      key: "featured",
+      align: "center" as const,
+      width: 100,
+      render: (_text: string, record: Post) => <Switch value={record.featured} size={'small'} />
+    },
+    {
       title: "Published",
       key: "published",
       align: "center" as const,
@@ -98,19 +105,19 @@ function PostDetail(props: Post & { author?: User, category?: Category, departme
       </div>
       <div className="flex flex-col gap-2">
         <div className="text-lg">
-          <Link href={`/posts/${props.slug}`} className="hover:underline text-black">
-            {props.title}
+          <Link href={`/posts/${props.slug}`}>
+            {props.published ? props.title : <span className="text-gray-500">{props.title} (Draft)</span>}
           </Link>
         </div>
         <div>
-          <Tag color="default">
-            <TagsOutlined /> {" "}
-            {props.category?.name || "Uncategorized"}
-          </Tag >
           {props.department && <Tag color="default">
             <ApartmentOutlined /> {" "}
             {props.department.name}
           </Tag >}
+          <Tag color="default">
+            <TagsOutlined /> {" "}
+            {props.category?.name || "Uncategorized"}
+          </Tag >
         </div>
         <div className="text-sm text-gray-500 my-2">{props.excerpt}</div>
         <div className="flex items-center gap-2 text-xs text-gray-500">

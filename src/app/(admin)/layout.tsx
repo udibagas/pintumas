@@ -74,18 +74,8 @@ export default function MainLayout({ children }: React.PropsWithChildren) {
           </Dropdown>
         </Header>
 
-        <Content style={{ margin: '16px' }}>
-          <div
-            style={{
-              padding: 24,
-              height: 'calc(100vh - 95px)',
-              overflow: 'auto',
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            {children}
-          </div>
+        <Content className='m-4'>
+          {children}
         </Content>
       </Layout>
     </Layout>

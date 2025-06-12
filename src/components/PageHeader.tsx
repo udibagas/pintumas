@@ -13,7 +13,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, subtitle, children }) =>
   return (
     <Space align="center" style={{ justifyContent: 'space-between', width: '100%', marginBottom: '1rem' }}>
       <div>
-        <Title level={2} style={{ marginBottom: 0 }}>{title}</Title>
+        <Title level={3} style={{ marginBottom: 0 }}>{title}</Title>
         <Text type="secondary">{subtitle}</Text>
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", gap: '1em' }}>
