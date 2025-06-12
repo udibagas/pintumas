@@ -1,4 +1,5 @@
 import { FormInstance } from "antd";
+import { AxiosError } from "axios";
 
 export type FileType = {
   filename: string;
@@ -31,4 +32,23 @@ export type CustomFormProps<T> = {
   onOk: (values: T) => void;
   errors: { [key: string]: string[] };
   form: FormInstance<T>;
+};
+
+export type PaginatedData<T> = {
+  from: number;
+  to: number;
+  page: number;
+  rows: T[];
+  total: number;
+};
+
+export type ServerErrorResponse = AxiosError & {
+  status: number;
+  code: string;
+  response: {
+    data: {
+      message: string;
+      errors?: Record<string, string[]>;
+    };
+  };
 };

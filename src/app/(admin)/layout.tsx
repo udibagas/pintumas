@@ -78,7 +78,7 @@ export default function MainLayout({ children }: React.PropsWithChildren) {
           <div
             style={{
               padding: 24,
-              height: 'calc(100vh - 165px)',
+              height: 'calc(100vh - 95px)',
               overflow: 'auto',
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
@@ -87,9 +87,9 @@ export default function MainLayout({ children }: React.PropsWithChildren) {
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        {/* <Footer style={{ textAlign: 'center' }}>
           ©{new Date().getFullYear()} Pintumas CMS
-        </Footer>
+        </Footer> */}
       </Layout>
     </Layout>
   );

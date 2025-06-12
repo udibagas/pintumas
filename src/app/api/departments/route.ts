@@ -1,14 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const departments = await prisma.department.findMany({
-      orderBy: {
-        name: "asc",
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(searchParams.get("limit") || "10", 10);
+
+    const skip = (page - 1) * pageSize;
+    const [rows, total] = await Promise.all([
+      prisma.department.findMany({
+        orderBy: {
+          name: "asc",
+        },
+      }),
+      prisma.department.count(),
+    ]);
+
+    return NextResponse.json(
+      {
+        rows,
+        total,
+        from: skip + 1,
+        to: skip + rows.length,
       },
-    });
-    return NextResponse.json(departments, { status: 200 });
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching departments:", error);
     return NextResponse.json(

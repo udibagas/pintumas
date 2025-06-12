@@ -3,21 +3,39 @@ import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic"; // Ensure this route is always fresh
 
-// Todo: implement pagination
 export async function GET(request: NextRequest) {
   try {
-    const posts = await prisma.post.findMany({
-      where: { published: true },
-      include: {
-        author: true,
-        media: true,
-        category: true,
-      },
-      orderBy: { publishedAt: "desc" },
-      take: 10,
-    });
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(searchParams.get("limit") || "10", 10);
 
-    return NextResponse.json(posts, { status: 200 });
+    const skip = (page - 1) * pageSize;
+
+    const [rows, total] = await Promise.all([
+      prisma.post.findMany({
+        include: {
+          author: true,
+          media: true,
+          category: true,
+          department: true,
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: pageSize,
+      }),
+      prisma.post.count(),
+    ]);
+
+    return NextResponse.json(
+      {
+        rows,
+        page,
+        total,
+        from: skip + 1,
+        to: skip + rows.length,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching posts:", error);
     return NextResponse.json(
