@@ -5,9 +5,24 @@ import { Modal, Form, Input, Select } from "antd";
 import CancelButton from "@/components/buttons/CancelButton";
 import SaveButton from "@/components/buttons/SaveButton";
 import { CustomFormProps } from "@/types";
-import { User } from "@prisma/client";
+import { Department, User } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
+import { getItems } from "@/lib/api-client";
 
 const CategoryForm: React.FC<CustomFormProps<User>> = ({ visible, isEditing, onCancel, onOk, errors, form }) => {
+  const { data: departments } = useQuery({
+    queryKey: ["departments"],
+    queryFn: async () => {
+      const data = await getItems<Department[]>("/api/departments", { paginated: false });
+      return data;
+    },
+    initialData: [],
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchOnMount: true,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
   return (
     <Modal
       width={450}
@@ -63,6 +78,23 @@ const CategoryForm: React.FC<CustomFormProps<User>> = ({ visible, isEditing, onC
               ["READER", "REPORTER", "EDITOR", "ADMIN"].map((role) => (
                 <Select.Option key={role} value={role}>
                   {role}
+                </Select.Option>
+              ))
+            }
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="Departemen"
+          name="departmentId"
+          validateStatus={errors.departmentId ? "error" : ""}
+          help={errors.departmentId?.join(", ")}
+        >
+          <Select>
+            {
+              departments.map((d) => (
+                <Select.Option key={d.id} value={d.name}>
+                  {d.name}
                 </Select.Option>
               ))
             }
