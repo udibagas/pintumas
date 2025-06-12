@@ -81,7 +81,7 @@ export function DataTableProvider<T extends { id: number | string }>({ url, chil
           ? await updateItem(url, values.id, values)
           : await createItem(url, values);
         console.log("Response:", res);
-        message.success("Record saved successfully");
+        message.success("Data berhasil disimpan");
         form.resetFields();
         setErrors({});
         setShowForm(false);
@@ -102,14 +102,15 @@ export function DataTableProvider<T extends { id: number | string }>({ url, chil
   const handleDelete = useCallback(
     (id: number | string) => {
       Modal.confirm({
-        title: "Are you sure you want to delete this record?",
-        content: "This action cannot be undone.",
-        okText: "Yes",
+        title: "Anda yakin akan menghapus data ini?",
+        content: "Aksi ini tidak dapat dibatalkan.",
+        centered: true,
+        okText: "Ya",
         okType: "danger",
-        cancelText: "No",
+        cancelText: "Tidak",
         onOk: () => {
           deleteItem(url, id).then(() => {
-            message.success("Record deleted successfully");
+            message.success("Data berhasil dihapus");
             refreshData();
           });
         },
