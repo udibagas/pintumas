@@ -1,0 +1,117 @@
+- Website portal berita, seperti facebook atau instagram
+- Hanya user di departemen yang bisa memposting berita
+  - Memungkinkan user untuk mengupload gambar, video, atau dokumen di berita
+- Fitur pencarian berita
+- Fitur kategori berita (menampilkan berita berdasarkan kategori)
+  - Kategori bisa berupa teks atau gambar
+  - Kategori bisa dihapus oleh admin
+  - Kategori bisa ditambahkan oleh admin
+  - Kategori bisa diubah oleh admin
+- Fitur tag berita (menampilkan berita berdasarkan tag)
+- Fitur komentar berita
+  - Perlu moderasi komentar? 
+  - Perlu login untuk mengomentari?
+  - Komentar bisa berupa teks
+  - Komentar bisa dihapus oleh user yang membuat komentar atau oleh admin
+- Fitur like berita
+  - Pengguna bisa menyukai berita
+  - Jumlah like ditampilkan di berita
+- Fitur berbagi berita (share)
+  - Pengguna bisa membagikan berita ke media sosial lain
+- Fitur notifikasi
+  - Pengguna mendapatkan notifikasi untuk berita terbaru via email jika mereka berlangganan
+- Fitur berlangganan berita
+  - Pengguna bisa berlangganan untuk mendapatkan berita terbaru
+  - Pengguna bisa berhenti berlangganan
+- Fitur admin
+  - Admin bisa mengelola berita
+    - Admin bisa menambahkan berita
+    - Admin bisa mengedit berita
+    - Admin bisa menghapus berita
+  - Admin bisa mengelola kategori berita
+    - Admin bisa menambahkan kategori
+    - Admin bisa mengedit kategori
+    - Admin bisa menghapus kategori
+  - Admin bisa mengelola tag berita
+    - Admin bisa menambahkan tag
+    - Admin bisa mengedit tag
+    - Admin bisa menghapus tag
+  - Admin bisa mengelola pengguna
+    - Admin bisa menambahkan pengguna
+    - Admin bisa mengedit pengguna
+    - Admin bisa menghapus pengguna
+- Fitur autentikasi pengguna
+  - Pengguna bisa mendaftar akun
+  - Pengguna bisa masuk ke akun mereka
+  - Pengguna bisa keluar dari akun mereka
+  - Pengguna bisa mengatur ulang kata sandi mereka
+  - Pengguna bisa mengaktifkan otentikasi dua faktor (2FA)
+- Fitur keamanan
+  - Pengguna harus memasukkan email dan kata sandi untuk masuk
+  - Pengguna harus mengonfirmasi email mereka setelah mendaftar
+  - Pengguna harus mengatur ulang kata sandi mereka jika lupa
+  - Pengguna harus mengaktifkan otentikasi dua faktor (2FA) untuk keamanan tambahan
+- Fitur responsif
+  - Website harus responsif dan dapat diakses di berbagai perangkat (desktop, tablet, ponsel)
+- Fitur aksesibilitas
+  - Website harus mudah diakses oleh pengguna dengan kebutuhan khusus
+- Fitur bahasa
+  - Website harus mendukung beberapa bahasa
+  - Pengguna bisa memilih bahasa yang mereka inginkan
+- Fitur statistik
+  - Admin bisa melihat statistik pengguna
+  - Admin bisa melihat statistik berita
+- Fitur keamanan data
+  - Data pengguna harus dienkripsi
+  - Data berita harus dienkripsi
+- Fitur backup dan pemulihan data
+  - Data harus dibackup secara berkala
+  - Data harus bisa dipulihkan jika terjadi kehilangan data
+- Fitur integrasi media sosial
+  - Pengguna bisa masuk menggunakan akun media sosial (misalnya, Google, Facebook)
+  - Pengguna bisa membagikan berita ke akun media sosial mereka
+- Fitur moderasi konten
+  - Admin bisa memoderasi berita yang diposting oleh pengguna
+  - Admin bisa memoderasi komentar yang dibuat oleh pengguna
+- Fitur pengaturan notifikasi
+  - Pengguna bisa mengatur preferensi notifikasi mereka
+  - Pengguna bisa memilih jenis notifikasi yang ingin mereka terima (misalnya, berita terbaru, komentar baru)
+- Fitur daftar berita terbaru
+  - Pengguna bisa melihat daftar berita terbaru di halaman utama
+- Fitur daftar berita populer
+  - Pengguna bisa melihat daftar berita populer di halaman utama
+- Fitur daftar berita berdasarkan kategori
+  - Pengguna bisa melihat daftar berita berdasarkan kategori di halaman utama
+- Fitur daftar berita berdasarkan tag
+  - Pengguna bisa melihat daftar berita berdasarkan tag di halaman utama
+- Fitur daftar berita berdasarkan tanggal
+  - Pengguna bisa melihat daftar berita berdasarkan tanggal di halaman utama
+- Fitur daftar berita berdasarkan penulis
+  - Pengguna bisa melihat daftar berita berdasarkan penulis di halaman utama
+- Fitur daftar berita berdasarkan jumlah like
+  - Pengguna bisa melihat daftar berita berdasarkan jumlah like di halaman utama
+- Fitur daftar berita berdasarkan jumlah komentar
+  - Pengguna bisa melihat daftar berita berdasarkan jumlah komentar di halaman utama
+- Fitur daftar berita berdasarkan jumlah view
+  - Pengguna bisa melihat daftar berita berdasarkan jumlah view di halaman utama
+- Fitur daftar berita berdasarkan popularitas
+  - Pengguna bisa melihat daftar berita berdasarkan popularitas di halaman utama
+- Fitur daftar berita berdasarkan relevansi
+  - Pengguna bisa melihat daftar berita berdasarkan relevansi di halaman utama
+- Fitur daftar berita berdasarkan waktu
+  - Pengguna bisa melihat daftar berita berdasarkan waktu di halaman utama
+- Fitur daftar berita berdasarkan lokasi
+  - Pengguna bisa melihat daftar berita berdasarkan lokasi di halaman utama
+- Fitur daftar berita berdasarkan jenis media
+  - Pengguna bisa melihat daftar berita berdasarkan jenis media (teks, gambar, video) di halaman utama
+- Fitur daftar berita berdasarkan status
+  - Pengguna bisa melihat daftar berita berdasarkan status (draft, published, archived) di halaman utama
+- Fitur daftar berita berdasarkan sumber
+  - Pengguna bisa melihat daftar berita berdasarkan sumber (internal, eksternal) di halaman utama
+- Fitur daftar berita berdasarkan tanggal publikasi
+  - Pengguna bisa melihat daftar berita berdasarkan tanggal publikasi di halaman utama
+- Fitur daftar berita berdasarkan tanggal pembaruan
+- Fitur profil pengguna
+  - Pengguna bisa mengedit profil mereka
+  - Pengguna bisa mengunggah foto profil
+ 

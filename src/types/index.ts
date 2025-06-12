@@ -1,59 +1,34 @@
-export type RoleType = "READER" | "REPORTER" | "EDITOR" | "ADMIN";
-export type MediaType = "IMAGE" | "VIDEO" | "AUDIO" | "DOCUMENT";
+import { FormInstance } from "antd";
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  image?: string | null;
-  role?: RoleType;
-}
-
-export interface Media {
-  id: number;
+export type FileType = {
+  filename: string;
+  mimetype: string;
+  originalname: string;
+  path: string;
   url: string;
-  caption?: string | null;
-  type: MediaType;
-  width?: number | null;
-  height?: number | null;
-  duration?: number | null;
-  size?: number | null;
-  format?: string | null;
-  createdAt: Date;
-  author?: User | null;
-}
+  size: number;
+};
 
-export interface Category {
-  id: number;
-  name: string;
-  slug: string;
-}
+export type AxiosErrorResponseType = {
+  message: string;
+  errors?: Record<string, string[]>;
+};
 
-export interface Post {
-  id: number;
-  title: string;
-  excerpt: string | null;
-  author: User;
-  media: Media[] | null;
-  publishedAt: Date | null;
-  content: string | null;
-  slug: string;
-  published: boolean;
-  category: Category | null;
-  categoryId?: number | null;
-  comments?: Comment[] | null;
-  commentCount?: number | null;
-  viewCount?: number | null;
-  likeCount?: number | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export type RecursivePartial<T> = NonNullable<T> extends object
+  ? {
+      [P in keyof T]?: NonNullable<T[P]> extends (infer U)[]
+        ? RecursivePartial<U>[]
+        : NonNullable<T[P]> extends object
+        ? RecursivePartial<T[P]>
+        : T[P];
+    }
+  : T;
 
-export interface Comment {
-  id: number;
-  content: string;
-  author: User | null;
-  authorId: string | null;
-  postId: number;
-  createdAt: Date;
-}
+export type CustomFormProps<T> = {
+  visible: boolean;
+  isEditing: boolean;
+  onCancel: () => void;
+  onOk: (values: T) => void;
+  errors: { [key: string]: string[] };
+  form: FormInstance<T>;
+};

@@ -60,10 +60,11 @@ export default function CommentForm({
       />
 
       <div>
-        <Button type="submit" className="cursor-pointer">
+        <Button type="submit" className="cursor-pointer bg-orange-400 hover:bg-orange-500 text-white">
           <Send />
-          Kirim komentar sebagai anonim
+          Kirim komentar
         </Button>
+
 
         <Button
           type="button"
@@ -74,7 +75,7 @@ export default function CommentForm({
           }}
         >
           <LogIn />
-          Masuk untuk mengirim komentar
+          Login
         </Button>
 
         {/* <p className="text-sm text-muted-foreground mt-2">

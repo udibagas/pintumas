@@ -35,7 +35,7 @@ export default function LikeButton({ post }: { post: Post }) {
 
   return (
     <>
-      <ThumbsUp className="cursor-pointer text-blue-400 size-4" onClick={handleLike} />
+      <ThumbsUp className="cursor-pointer text-orange-300 hover:text-orange-400 size-4" onClick={handleLike} />
       <span>{likeCount}</span>
     </>
   )

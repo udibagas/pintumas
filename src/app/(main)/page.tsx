@@ -1,37 +1,23 @@
 'use client';
 
-import PostCard from "@/components/post-card";
-import PostForm from "@/components/post-form";
-import { Post } from "@/types";
-import { useEffect, useState } from "react";
+import { Layout } from 'antd';
+import LatestPost from '@/components/post/LatestPost';
+import FeaturedPost from '@/components/post/FeaturedPost';
+import PopularPost from '@/components/post/PopularPost';
+import Categories from '@/components/post/Categories';
 
-export default function Home() {
-  const [posts, setPosts] = useState<Post[]>([]);
+const { Content } = Layout;
 
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await fetch("/api/posts");
-        if (!response.ok) {
-          throw new Error("Failed to fetch posts");
-        }
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    }
-    fetchPosts();
-  }, []);
-
+export default function HomePage() {
   return (
-    <div className="container mx-auto">
-      <PostForm onSuccess={(post) => setPosts((prev) => [post, ...prev])} />
-      <div className="grid gap-6">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
+    <Content style={{ padding: '0 50px' }}>
+      <div style={{ margin: '24px 0' }}>
+        <FeaturedPost />
       </div>
-    </div>
-  )
+
+      <LatestPost />
+      <PopularPost />
+      <Categories />
+    </Content>
+  );
 }

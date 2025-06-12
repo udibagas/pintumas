@@ -1,39 +1,45 @@
-import type { Metadata } from "next";
-import Header from "@/components/header";
+'use client';
 
-export const metadata: Metadata = {
-  title: "PINTUMAS",
-  description: "Pusat Informasi",
-};
+import { Layout, Row, Col, Typography, Button, Space } from 'antd';
+import Link from 'next/link';
+const { Header, Content, Footer } = Layout;
+const { Title, Text } = Typography;
 
-export default function MainLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-
+export default function MainLayout({ children }: React.PropsWithChildren) {
   return (
-    <>
-      <Header />
-      <div className="container max-w-2/3 mx-auto py-8 flex">
-        <aside className="w-64 hidden lg:block">
-          <div className="bg-muted p-4 rounded-xl">
-            Ini nanti sidebar
-          </div>
-          {/* Sidebar content can go here */}
-        </aside>
-        <div className="flex-1 px-4">
-          {/* Main content area */}
-          <div className="grid gap-6">
-            {children}
-          </div>
-        </div>
-      </div>
-      <footer className="bg-muted py-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} PINTUMAS. All rights reserved.
-        </p>
-      </footer>
-    </>
+    <Layout>
+      <Header style={{ background: '#fff', padding: 0 }}>
+        <Row justify="space-between" align="middle">
+          <Col>
+            <Title level={3} style={{ margin: '16px' }}>NewsPortal</Title>
+          </Col>
+          <Col>
+            <Space size="large">
+              <Button type="text">Home</Button>
+              <Button type="text">Categories</Button>
+              <Button type="text">Popular</Button>
+              <Button type="text">About</Button>
+              <Button type="primary">Subscribe</Button>
+            </Space>
+          </Col>
+        </Row>
+      </Header>
+
+      <Content style={{ padding: '0 50px' }}>
+        {children}
+      </Content>
+
+      <Footer style={{ textAlign: 'center' }}>
+        <Space direction="vertical" size="middle">
+          <Space size="large">
+            <Link href='/about'>Tentang Kami</Link>
+            <Link href='/contact'>Hubungi Kami</Link>
+            <Link href='/privacy-policy'>Kebijakan Privasi</Link>
+            <Link href='/terms-of-services'>Ketentuan Layanan</Link>
+          </Space>
+          <Text>©{new Date().getFullYear()} Pintumas</Text>
+        </Space>
+      </Footer>
+    </Layout>
   );
 }

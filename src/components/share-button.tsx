@@ -35,6 +35,6 @@ export default function ShareButton({ post }: { post: Post }) {
   };
 
   return (
-    <Share2 className="cursor-pointer text-blue-400 size-4" onClick={handleShare} />
+    <Share2 className="cursor-pointer text-orange-300 hover:text-orange-400 size-4" onClick={handleShare} />
   )
 }

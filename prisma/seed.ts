@@ -17,7 +17,7 @@ async function seed() {
   });
 
   // Create a default category
-  const category = await prisma.category.upsert({
+  await prisma.category.upsert({
     where: { slug: "umum" },
     update: {},
     create: {
@@ -26,29 +26,71 @@ async function seed() {
     },
   });
 
-  await prisma.post.create({
-    data: {
-      title: "Contoh Artikel 1",
-      slug: "contoh-artikel-1",
-      content: "Ini adalah isi artikel contoh.",
-      excerpt: "Ini adalah ringkasan artikel contoh.",
-      published: true,
-      publishedAt: new Date(),
-      authorId: admin.id,
-      categoryId: category.id,
-      media: {
-        create: [
-          {
-            url: "https://placehold.co/600x400",
-            caption: "Gambar contoh",
-            type: "IMAGE",
-            width: 600,
-            height: 400,
-          },
-        ],
+  try {
+    await prisma.category.createMany({
+      data: [
+        {
+          name: "Berita",
+          slug: "berita",
+        },
+        {
+          name: "Pengumuman",
+          slug: "pengumuman",
+        },
+        {
+          name: "Regulasi",
+          slug: "regulasi",
+        },
+        {
+          name: "Publikasi",
+          slug: "publikasi",
+        },
+      ],
+    });
+  } catch (error) {
+    console.error("Error during seeding categegory:", error);
+  }
+
+  const post = {
+    title: "Lorem ipsum dolor sit amet",
+    slug: "lorem-ipsum-dolor-sit-amet",
+    content: `
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        `,
+    excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  };
+
+  for (let i = 10; i < 20; i++) {
+    await prisma.post.create({
+      data: {
+        title: `${post.title} - ${i + 1}`,
+        slug: `${post.slug}-${i + 1}`,
+        content:
+          post.content + `\n\nThis is additional content for post ${i + 1}.`,
+        excerpt: post.excerpt + ` This is an excerpt for post ${i + 1}.`,
+        published: true,
+        publishedAt: new Date(),
+        authorId: admin.id,
+        categoryId: Math.floor(Math.random() * 5) + 1, // Random category ID between 1 and 5
+        featured: i % 2 === 0, // Set featured for even indexed posts
+        media: {
+          create: [
+            {
+              url: "https://picsum.photos/600/400?random=" + i,
+              caption: `Gambar contoh ${i + 1}`,
+              type: "IMAGE",
+              width: 600,
+              height: 400,
+            },
+          ],
+        },
       },
-    },
-  });
+    });
+  }
 }
 
 seed()

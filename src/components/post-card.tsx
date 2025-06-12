@@ -16,7 +16,7 @@ export default function PostCard({ post, detail = false }: { post: Post, detail?
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-3xl">
+        <CardTitle className="text-2xl font-bold text-orange-400 hover:text-orange-500 transition-colors duration-200">
           {detail ? post.title : <Link href={`/posts/${post.slug}`} className="hover:underline">
             {post.title}
           </Link>}
@@ -41,7 +41,7 @@ export default function PostCard({ post, detail = false }: { post: Post, detail?
                 key={media.id}
                 src={media.url}
                 alt={post.title}
-                className="w-full h-auto rounded-xl"
+                className="w-full h-auto rounded-lg"
                 width={media.width || 600}
                 height={media.height || 400}
                 loading="lazy"
@@ -55,10 +55,10 @@ export default function PostCard({ post, detail = false }: { post: Post, detail?
           ))}
         </div>}
 
-        <div className="bg-muted mb-4 p-4 rounded-lg whitespace-pre-line text-muted-foreground">
+        <div className="text-muted-foreground mb-8 whitespace-pre-line text-sm">
           {showDetail && post.content}
           {!showDetail && post.excerpt}
-          {!showDetail && <div className="text-blue-500 cursor-pointer text-sm mt-4" onClick={() => setShowDetail(true)}>
+          {(!showDetail && (post.content?.length ?? 0 > 200)) && <div className="text-orange-300 hover:text-orange-400 cursor-pointer text-sm mt-4" onClick={() => setShowDetail(true)}>
             Baca Selengkapnya <ArrowRight className="inline size-4" />
           </div>}
         </div>

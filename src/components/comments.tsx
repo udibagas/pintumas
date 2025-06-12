@@ -23,11 +23,11 @@ export default function Comments({ postId }: { postId: number }) {
 
       return response.json();
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60, // 1 minutes
   });
 
   return (
-    <>
+    <div className="mt-8">
       <CommentForm postId={postId} onCommentAdded={() => queryClient.invalidateQueries({
         queryKey: ['comments', postId],
       })} />
@@ -35,7 +35,7 @@ export default function Comments({ postId }: { postId: number }) {
       <div className="mt-4">
         {isPending ? <p className="text-muted-foreground">Memuat komentar...</p> : <CommentList comments={comments} />}
       </div>
-    </>
+    </div>
   )
 }
 
@@ -49,7 +49,7 @@ function CommentList({ comments }: { comments: Comment[] }) {
   return (
     <ul>
       {comments.map((comment) => (
-        <li key={comment.id} className="bg-muted p-4 my-4 rounded-lg">
+        <li key={comment.id} className="bg-slate-50 p-4 rounded-lg my-2">
           <div className="flex gap-2 items-center">
             <Avatar className="size-6">
               <AvatarImage src="https://github.com/shadcn.png" />

@@ -82,6 +82,7 @@ model Post {
   commentCount Int?        @default(0) // New: Comment count for posts
   viewCount    Int?        @default(0) // New: View count for posts
   PostLike     PostLike[]
+  featured     Boolean     @default(false) // New: Feature flag for posts
 
   @@index([slug]) // Faster post lookup
   @@index([publishedAt]) // Sort by publish date
