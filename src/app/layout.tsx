@@ -22,6 +22,9 @@ const queryClient = new QueryClient()
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en">
+      <head>
+        <title>PINTUMAS - </title>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

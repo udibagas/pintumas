@@ -48,7 +48,7 @@ export default function NavMenu() {
 
   return (
     <Menu
-      theme="dark"
+      theme="light"
       selectedKeys={[selectedKey]}
       mode="inline"
       items={items}

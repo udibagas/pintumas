@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Avatar, Button, Dropdown, Layout, Modal } from 'antd';
+import { Avatar, Button, Dropdown, Image, Layout, Modal } from 'antd';
 import NavMenu from '@/components/nav-menu';
 import client from '@/lib/api-client';
 import { redirect } from 'next/navigation';
@@ -36,40 +36,34 @@ export default function MainLayout({ children }: React.PropsWithChildren) {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider
-        width={220}
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
-        <div style={{
-          width: collapsed ? "40px" : "80px",
-          height: collapsed ? "40px" : "80px",
-          margin: "20px auto",
-          backgroundColor: "aliceblue",
-          borderRadius: "50%",
-          textAlign: "center",
-          lineHeight: collapsed ? "40px" : "80px",
-          fontSize: collapsed ? "1.5rem" : "3rem",
-          color: "black",
-        }}>
-          {/* {user?.name[0]} */}
-          A
+      <Header className='flex justify-between py-4 items-center shadow'>
+        <div className='flex items-center gap-2 text-lg font-semibold'>
+          <Image
+            preview={false}
+            src='/pintumas.png'
+            alt='Logo'
+            width={25}
+          />
+          <span className='text-[#D4AF37]'>PINTUMAS</span>
         </div>
+        <Dropdown menu={{ items: menuItems }} placement="bottom" arrow>
+          <Button type='text'>
+            <Avatar size='small' icon={<UserOutlined />} style={{ background: '#D4AF37' }} />
+            <span className='text-[#D4AF37]'>{`Admin User`}</span>
+          </Button>
+        </Dropdown>
+      </Header>
 
-        <NavMenu />
-      </Sider>
       <Layout>
-        <Header style={{ padding: '0 20px', background: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ fontSize: 24, color: '#0C74B6', fontWeight: 'bold' }}>PINTUMAS</div>
-          <Dropdown menu={{ items: menuItems }} placement="bottom" arrow>
-            <Button type='text'>
-              <Avatar size='small' icon={<UserOutlined />} />
-              <span>{`Admin User`}</span>
-            </Button>
-          </Dropdown>
-        </Header>
-
+        <Sider
+          theme='light'
+          width={220}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+        >
+          <NavMenu />
+        </Sider>
         <Content className='m-4'>
           {children}
         </Content>
