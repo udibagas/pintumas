@@ -9,7 +9,7 @@ type AddButtonProps = {
 
 const AddButton: React.FC<AddButtonProps> = ({ label, onClick }) => {
   return (
-    <Button type="primary" icon={<PlusOutlined />} onClick={onClick}>
+    <Button color="orange" variant="solid" icon={<PlusOutlined />} onClick={onClick}>
       {label || "Add"}
     </Button>
   );

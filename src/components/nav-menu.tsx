@@ -30,7 +30,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link href="/admin">Dashboard</Link>, '/', <BarChartOutlined />),
+  getItem(<Link href="/admin">Dashboard</Link>, '/admin', <BarChartOutlined />),
   getItem(<Link href="/admin/posts">Post</Link>, '/admin/posts', <FileDoneOutlined />),
   getItem(<Link href="/admin/categories">Kategori</Link>, '/admin/categories', <TagsOutlined />),
   getItem(<Link href="/admin/comments">Komentar</Link>, '/admin/comments', <CommentOutlined />),

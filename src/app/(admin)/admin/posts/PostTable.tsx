@@ -1,17 +1,17 @@
 'use client';
 
 import React from "react";
-import { Avatar, Divider, Image, Input, Switch, Tag } from "antd";
-import { ApartmentOutlined, ClockCircleOutlined, CommentOutlined, EyeOutlined, LikeOutlined, ReloadOutlined, TagsOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, Button, Divider, Image, Input, Switch, Tag } from "antd";
+import { ApartmentOutlined, ClockCircleOutlined, CommentOutlined, EyeOutlined, LikeOutlined, PlusOutlined, ReloadOutlined, TagsOutlined, UserOutlined } from "@ant-design/icons";
 import PostForm from "./PostForm";
 import PageHeader from "@/components/PageHeader";
-import AddButton from "@/components/buttons/AddButton";
 import ActionButton from "@/components/buttons/ActionButton";
 import { Category, Department, Media, Post, User } from "@prisma/client";
 import Link from "next/link";
 import moment from "moment";
 import DataTable from "@/components/DataTable";
 import { useDataTableContext } from "@/hooks/useDataTable";
+import { redirect } from "next/navigation";
 
 export default function PostTable() {
   const {
@@ -24,7 +24,6 @@ export default function PostTable() {
     refreshData,
     handleEdit,
     handleDelete,
-    handleAdd,
     setSearch,
     setCurrentPage,
   } = useDataTableContext()
@@ -74,7 +73,9 @@ export default function PostTable() {
             setCurrentPage(1)
             setSearch(value)
           }} />
-        <AddButton label="Tambah Post" onClick={handleAdd} />
+        <Button color="default" variant="solid" icon={<PlusOutlined />} onClick={() => redirect('/admin/posts/create')}>
+          Tambah Postingan
+        </Button>
       </PageHeader>
 
       <DataTable<Post> columns={columns} />
@@ -99,7 +100,7 @@ function PostDetail(props: Post & { author?: User, category?: Category, departme
           width={200}
           height={150}
           className="rounded-md"
-          src={props.media?.[0]?.url}
+          src={props.media?.[0]?.url ?? 'https://placehold.co/400x300'}
           alt={props.title}
         />
       </div>

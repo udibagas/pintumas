@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { z } from "zod";
 
 export const dynamic = "force-dynamic"; // Ensure this route is always fresh
 
@@ -65,10 +66,24 @@ export async function POST(request: NextRequest) {
       categoryId = 1,
     } = body;
 
-    if (!title || !content || !authorId) {
+    const schema = z.object({
+      title: z.string().nonempty({ message: "Title is required" }),
+      content: z.string().nonempty({ message: "Content is required" }),
+      authorId: z.string().optional(),
+      categoryId: z.number().optional(),
+    });
+
+    const vaidationResult = schema.safeParse(body);
+
+    if (!vaidationResult.success) {
       return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
+        {
+          message: "Validation failed",
+          errors: vaidationResult.error.flatten().fieldErrors,
+        },
+        {
+          status: 400,
+        }
       );
     }
 

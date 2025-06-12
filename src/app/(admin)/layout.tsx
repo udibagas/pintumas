@@ -44,12 +44,12 @@ export default function MainLayout({ children }: React.PropsWithChildren) {
             alt='Logo'
             width={25}
           />
-          <span className='text-[#D4AF37]'>PINTUMAS</span>
+          <span className='text-[#E6DABA]'>PINTUMAS</span>
         </div>
         <Dropdown menu={{ items: menuItems }} placement="bottom" arrow>
           <Button type='text'>
-            <Avatar size='small' icon={<UserOutlined />} style={{ background: '#D4AF37' }} />
-            <span className='text-[#D4AF37]'>{`Admin User`}</span>
+            <Avatar size='small' icon={<UserOutlined />} style={{ background: '#E6DABA' }} />
+            <span className='text-[#E6DABA]'>{`Admin User`}</span>
           </Button>
         </Dropdown>
       </Header>
