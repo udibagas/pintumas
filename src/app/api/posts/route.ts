@@ -8,11 +8,21 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
     const page = parseInt(searchParams.get("page") || "1", 10);
     const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
-
     const skip = (page - 1) * pageSize;
+    const search = searchParams.get("search") || "";
+
+    const where = search
+      ? {
+          OR: [
+            { title: { contains: search, mode: "insensitive" as const } },
+            { content: { contains: search, mode: "insensitive" as const } },
+          ],
+        }
+      : {};
 
     const [rows, total] = await Promise.all([
       prisma.post.findMany({
+        where,
         include: {
           author: true,
           media: true,
@@ -23,7 +33,7 @@ export async function GET(request: NextRequest) {
         skip,
         take: pageSize,
       }),
-      prisma.post.count(),
+      prisma.post.count({ where }),
     ]);
 
     return NextResponse.json(
