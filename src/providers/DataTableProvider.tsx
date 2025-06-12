@@ -100,7 +100,7 @@ export function DataTableProvider<T extends { id: number | string }>({ url, chil
   );
 
   const handleDelete = useCallback(
-    (id: number) => {
+    (id: number | string) => {
       Modal.confirm({
         title: "Are you sure you want to delete this record?",
         content: "This action cannot be undone.",

@@ -9,7 +9,7 @@ import client from '@/lib/api-client';
 import { redirect } from 'next/navigation';
 
 const { Text } = Typography;
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 export default function MainLayout({ children }: React.PropsWithChildren) {
   const [collapsed, setCollapsed] = useState(false);
@@ -87,9 +87,6 @@ export default function MainLayout({ children }: React.PropsWithChildren) {
             {children}
           </div>
         </Content>
-        {/* <Footer style={{ textAlign: 'center' }}>
-          ©{new Date().getFullYear()} Pintumas CMS
-        </Footer> */}
       </Layout>
     </Layout>
   );

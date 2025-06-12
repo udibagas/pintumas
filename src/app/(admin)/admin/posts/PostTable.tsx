@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Avatar, Divider, Image, Input, Switch, Tag } from "antd";
-import { CommentOutlined, EyeOutlined, LikeOutlined, ReloadOutlined } from "@ant-design/icons";
+import { ApartmentOutlined, ClockCircleOutlined, CommentOutlined, EyeOutlined, LikeOutlined, ReloadOutlined, TagsOutlined, UserOutlined } from "@ant-design/icons";
 import PostForm from "./PostForm";
 import PageHeader from "@/components/PageHeader";
 import AddButton from "@/components/buttons/AddButton";
@@ -86,11 +86,11 @@ export default function PostTable() {
 
 function PostDetail(props: Post & { author?: User, category?: Category, department?: Department, media?: Media[] }) {
   return (
-    <div className="flex items-start gap-4">
+    <div className="flex items-center gap-4">
       <div className="flex-shrink-0">
         <Image
           width={200}
-          height={120}
+          height={150}
           className="rounded-md"
           src={props.media?.[0]?.url}
           alt={props.title}
@@ -104,18 +104,21 @@ function PostDetail(props: Post & { author?: User, category?: Category, departme
         </div>
         <div>
           <Tag color="default">
+            <TagsOutlined /> {" "}
             {props.category?.name || "Uncategorized"}
           </Tag >
           {props.department && <Tag color="default">
+            <ApartmentOutlined /> {" "}
             {props.department.name}
           </Tag >}
         </div>
-        <div className="text-sm text-gray-500">{props.excerpt}</div>
+        <div className="text-sm text-gray-500 my-2">{props.excerpt}</div>
         <div className="flex items-center gap-2 text-xs text-gray-500">
-          <Avatar size={'small'} alt="B" src="A" />
+          <Avatar size={'small'} alt="B" icon={<UserOutlined />} />
           {props.author?.name || "Admin"}
           <Divider type="vertical" />
-          <span>{moment(props.createdAt).format('DD-MMM-YY HH:mm')}</span>
+          <ClockCircleOutlined />
+          <span> {moment(props.createdAt).format('DD-MMM-YY HH:mm')} </span>
           <Divider type="vertical" />
           <EyeOutlined />
           <span>{props.viewCount || 0}</span>
