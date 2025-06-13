@@ -23,7 +23,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en">
       <head>
-        <title>PINTUMAS - </title>
+        <title>PINTUMAS - Pusat Informasi Terpadu Pelabuhan Tanjung Mas</title>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

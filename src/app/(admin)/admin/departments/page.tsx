@@ -1,13 +1,13 @@
 'use client';
 
 import React from "react";
-import { Post } from "@prisma/client";
+import { Department } from "@prisma/client";
 import { DataTableProvider } from "@/providers/DataTableProvider";
 import DepartmentTable from "./DepartmentTable";
 
-export default function AdminPostPage() {
+export default function AdminDepartmentPage() {
   return (
-    <DataTableProvider<Post> url="/api/departments">
+    <DataTableProvider<Department> url="/api/departments">
       <DepartmentTable />
     </DataTableProvider>
   );

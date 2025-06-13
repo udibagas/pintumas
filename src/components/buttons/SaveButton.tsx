@@ -8,7 +8,7 @@ type SaveButtonProps = {
 
 const SaveButton: React.FC<SaveButtonProps> = ({ label }) => {
   return (
-    <Button icon={<SaveOutlined />} type="primary" form='form' htmlType="submit">
+    <Button icon={<SaveOutlined />} color="default" variant="solid" form='form' htmlType="submit">
       {label || 'Save'}
     </Button>
   );

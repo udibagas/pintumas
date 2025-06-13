@@ -64,11 +64,15 @@ export async function POST(request: NextRequest) {
       content,
       authorId = "cmbhc6iz30000qww5bpfshhl1",
       categoryId = 1,
+      published = false,
+      featured = false,
     } = body;
 
     const schema = z.object({
-      title: z.string().nonempty({ message: "Title is required" }),
-      content: z.string().nonempty({ message: "Content is required" }),
+      title: z.string().nonempty("Judul harus diisi"),
+      content: z.string().nonempty("Konten harus diisi"),
+      published: z.boolean().optional(),
+      featured: z.boolean().optional(),
       authorId: z.string().optional(),
       categoryId: z.number().optional(),
     });
@@ -92,8 +96,9 @@ export async function POST(request: NextRequest) {
         title,
         slug: title.toLowerCase().replace(/\s+/g, "-").slice(0, 50),
         excerpt: content.slice(0, 150),
-        published: true,
-        publishedAt: new Date(),
+        published,
+        publishedAt: published ? new Date() : null,
+        featured,
         content,
         authorId,
         categoryId,

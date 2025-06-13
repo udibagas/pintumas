@@ -1,6 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = request.nextUrl;
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
+
+    const skip = (page - 1) * pageSize;
+    const [rows, total] = await Promise.all([
+      prisma.comment.findMany({
+        orderBy: { createdAt: "desc" },
+        include: { author: true },
+        take: pageSize,
+        skip,
+      }),
+      prisma.comment.count(),
+    ]);
+
+    return NextResponse.json(
+      {
+        rows,
+        total,
+        from: skip + 1,
+        to: skip + rows.length,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { postId, content } = await req.json();
@@ -33,33 +68,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(comment, { status: 201 });
   } catch (error) {
     console.error("Error in POST /api/comment:", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
-  }
-}
-
-export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = req.nextUrl;
-    const postId = searchParams.get("postId");
-
-    if (!postId) {
-      return new NextResponse("Post ID is required", { status: 400 });
-    }
-
-    const id = parseInt(postId, 10);
-    if (isNaN(id)) {
-      return new NextResponse("Invalid Post ID", { status: 400 });
-    }
-
-    const comments = await prisma.comment.findMany({
-      where: { postId: id },
-      include: { author: true },
-      orderBy: { createdAt: "desc" },
-    });
-
-    return NextResponse.json(comments, { status: 200 });
-  } catch (error) {
-    console.error("Error in GET /api/comment:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

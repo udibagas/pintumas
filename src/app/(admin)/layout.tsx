@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Dropdown, Image, Layout, Modal } from 'antd';
 import NavMenu from '@/components/nav-menu';
@@ -62,6 +62,12 @@ export default function MainLayout({ children }: React.PropsWithChildren) {
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
         >
+          <div className='text-center mt-4 mb-2 px-4'>
+            <Button color='default' variant='solid' className='w-full' onClick={() => redirect('/admin/posts/create')}>
+              <PlusOutlined />
+              {!collapsed && <span>Buat Post Baru</span>}
+            </Button>
+          </div>
           <NavMenu />
         </Sider>
         <Content className='m-4'>
