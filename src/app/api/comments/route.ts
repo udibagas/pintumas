@@ -6,16 +6,36 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
     const page = parseInt(searchParams.get("page") || "1", 10);
     const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
+    const search = searchParams.get("search") || "";
+
+    const where = search
+      ? {
+          OR: [
+            { content: { contains: search, mode: "insensitive" as const } },
+            {
+              author: {
+                name: { contains: search, mode: "insensitive" as const },
+              },
+            },
+            {
+              post: {
+                title: { contains: search, mode: "insensitive" as const },
+              },
+            },
+          ],
+        }
+      : {};
 
     const skip = (page - 1) * pageSize;
     const [rows, total] = await Promise.all([
       prisma.comment.findMany({
+        where,
         orderBy: { createdAt: "desc" },
-        include: { author: true },
+        include: { author: true, post: true },
         take: pageSize,
         skip,
       }),
-      prisma.comment.count(),
+      prisma.comment.count({ where }),
     ]);
 
     return NextResponse.json(

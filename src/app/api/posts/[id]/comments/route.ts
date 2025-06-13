@@ -1,22 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { searchParams } = req.nextUrl;
-    const postId = searchParams.get("postId");
-
-    if (!postId) {
-      return new NextResponse("Post ID is required", { status: 400 });
-    }
-
-    const id = parseInt(postId, 10);
-    if (isNaN(id)) {
-      return new NextResponse("Invalid Post ID", { status: 400 });
-    }
+    const postId = parseInt(params.id, 10);
 
     const comments = await prisma.comment.findMany({
-      where: { postId: id },
+      where: { postId: postId },
       include: { author: true },
       orderBy: { createdAt: "desc" },
     });

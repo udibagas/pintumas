@@ -1,10 +1,10 @@
 'use client';
 
-import { Comment } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import CommentForm from "./comment-form";
 import moment from "moment";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Comment, User } from "@prisma/client";
 
 export default function Comments({ postId }: { postId: number }) {
   const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ export default function Comments({ postId }: { postId: number }) {
   const { isPending, data: comments } = useQuery({
     queryKey: ['comments', postId],
     queryFn: async () => {
-      const response = await fetch(`/api/comments?postId=${postId}`, {
+      const response = await fetch(`/api/posts/${postId}/comments`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', },
       });
@@ -39,7 +39,7 @@ export default function Comments({ postId }: { postId: number }) {
   )
 }
 
-function CommentList({ comments }: { comments: Comment[] }) {
+function CommentList({ comments }: { comments: (Comment & { author: User })[] }) {
   moment.locale('id-id');
 
   if (comments.length === 0) {

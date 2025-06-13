@@ -28,8 +28,6 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     return <div className="text-red-500">Post tidak ditemukan</div>;
   }
 
-
-
   return (
     <PostCard post={post} detail />
   )

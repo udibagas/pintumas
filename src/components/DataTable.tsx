@@ -4,6 +4,7 @@ import { useDataTableContext } from "../hooks/useDataTable";
 import { JSX } from "react";
 
 interface DataTableProps<T> {
+  showHeader?: boolean;
   columns: {
     title: string | JSX.Element;
     dataIndex?: string;
@@ -14,12 +15,13 @@ interface DataTableProps<T> {
   }[];
 }
 
-export default function DataTable<T extends { id: number | string }>({ columns }: DataTableProps<T>) {
+export default function DataTable<T extends { id: number | string }>({ columns, showHeader = true }: DataTableProps<T>) {
   const { useFetch, setPageSize, setCurrentPage, currentPage } = useDataTableContext()
   const { isPending, data } = useFetch<PaginatedData<T>>();
 
   return (
     <Table
+      showHeader={showHeader}
       scroll={{ y: 'calc(100vh - 260px)' }}
       loading={isPending}
       size="small"
