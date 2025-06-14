@@ -3,16 +3,9 @@ import prisma from "@/lib/prisma";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Comment ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   try {
     const comment = await prisma.comment.delete({

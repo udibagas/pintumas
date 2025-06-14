@@ -5,16 +5,9 @@ import { schema } from "@/validations/user.validation";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Category ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   try {
     const user = await prisma.user.findUnique({
@@ -37,17 +30,9 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Category ID is required" },
-      { status: 400 }
-    );
-  }
-
+  const { id } = await params;
   const body = await request.json();
   const vaidationResult = schema.safeParse(body);
 

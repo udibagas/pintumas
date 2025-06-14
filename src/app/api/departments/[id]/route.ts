@@ -3,16 +3,9 @@ import prisma from "@/lib/prisma";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Department ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   try {
     const department = await prisma.department.findUnique({
@@ -38,17 +31,9 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Department ID is required" },
-      { status: 400 }
-    );
-  }
-
+  const { id } = await params;
   const { name, description } = await request.json();
 
   if (!name) {
@@ -73,16 +58,9 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Department ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   try {
     const department = await prisma.department.delete({

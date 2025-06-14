@@ -8,13 +8,6 @@ export async function GET(
 ) {
   const { id } = await params;
 
-  if (!id) {
-    return NextResponse.json(
-      { message: "Department ID is required" },
-      { status: 400 }
-    );
-  }
-
   try {
     const post = await prisma.post.findUnique({
       where: { id: parseInt(id, 10) },
@@ -39,17 +32,9 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Department ID is required" },
-      { status: 400 }
-    );
-  }
-
+  const { id } = await params;
   const body = await request.json();
   const vaidationResult = schema.safeParse(body);
 
@@ -88,16 +73,9 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Department ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   try {
     const post = await prisma.post.delete({

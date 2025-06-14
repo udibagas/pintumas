@@ -3,16 +3,9 @@ import prisma from "@/lib/prisma";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Category ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   try {
     const category = await prisma.category.findUnique({
@@ -35,22 +28,11 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Category ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   const { name } = await request.json();
-
-  if (!name) {
-    return NextResponse.json({ message: "Name is required" }, { status: 400 });
-  }
 
   try {
     const category = await prisma.category.update({
@@ -73,16 +55,9 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Category ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   try {
     const category = await prisma.category.delete({
