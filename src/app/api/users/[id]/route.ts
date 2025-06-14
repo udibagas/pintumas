@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { hashSync } from "bcrypt";
+import { schema } from "@/validations/user.validation";
 
 export async function GET(
   request: NextRequest,
@@ -47,20 +48,29 @@ export async function PUT(
     );
   }
 
-  const { name, email, role, password } = await request.json();
+  const body = await request.json();
+  const vaidationResult = schema.safeParse(body);
 
-  if (!name) {
-    return NextResponse.json({ message: "Name is required" }, { status: 400 });
+  if (!vaidationResult.success) {
+    return NextResponse.json(
+      {
+        message: "Validation failed",
+        errors: vaidationResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
+
+  const restData = vaidationResult.data;
 
   try {
     const user = await prisma.user.update({
       where: { id },
       data: {
-        name,
-        email,
-        role,
-        password: password ? hashSync(password, 10) : undefined, // Hash the password if provided
+        ...restData,
+        password: restData.password
+          ? hashSync(restData.password, 10)
+          : undefined, // Hash the password if provided
       },
     });
 

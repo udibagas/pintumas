@@ -40,7 +40,7 @@ model User {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   Media        Media[]
-  Department   Department? @relation(fields: [departmentId], references: [id])
+  department   Department? @relation(fields: [departmentId], references: [id])
   departmentId Int?
   PostLike     PostLike[]
 }

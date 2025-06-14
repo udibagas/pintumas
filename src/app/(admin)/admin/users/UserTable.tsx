@@ -6,7 +6,7 @@ import UserForm from "./UserForm";
 import PageHeader from "@/components/PageHeader";
 import AddButton from "@/components/buttons/AddButton";
 import ActionButton from "@/components/buttons/ActionButton";
-import { User } from "@prisma/client";
+import { Department, User } from "@prisma/client";
 import { useDataTableContext } from "@/hooks/useDataTable";
 import DataTable from "@/components/DataTable";
 
@@ -32,6 +32,14 @@ export default function UserTable() {
     },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email" },
+    {
+      title: "Departemen",
+      dataIndex: "departmentId",
+      key: "departmentId",
+      render: (_: string, record: User & { department: Department }) => {
+        return record.department?.name ?? '-'
+      }
+    },
     { title: "Role", dataIndex: "role", key: "role" },
     {
       title: <ReloadOutlined onClick={refreshData} />,

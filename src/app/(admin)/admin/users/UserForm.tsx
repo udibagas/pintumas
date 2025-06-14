@@ -1,27 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Select } from "antd";
 import CancelButton from "@/components/buttons/CancelButton";
 import SaveButton from "@/components/buttons/SaveButton";
-import { CustomFormProps } from "@/types";
+import { CustomFormProps, PaginatedData } from "@/types";
 import { Department, User } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
 import { getItems } from "@/lib/api-client";
 
 const CategoryForm: React.FC<CustomFormProps<User>> = ({ visible, isEditing, onCancel, onOk, errors, form }) => {
-  const { data: departments } = useQuery({
-    queryKey: ["departments"],
-    queryFn: async () => {
-      const data = await getItems<Department[]>("/api/departments", { paginated: false });
-      return data;
-    },
-    initialData: [],
-    refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
-    refetchOnMount: true,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
+  const [departments, setDepartments] = useState<Department[]>([]);
+
+  useEffect(() => {
+    getItems<PaginatedData<Department>>("/api/departments", { pageSize: 1000 })
+      .then((data) => setDepartments(data.rows))
+  }, [])
 
   return (
     <Modal
@@ -55,7 +48,7 @@ const CategoryForm: React.FC<CustomFormProps<User>> = ({ visible, isEditing, onC
           validateStatus={errors.name ? "error" : ""}
           help={errors.name?.join(", ")}
         >
-          <Input />
+          <Input placeholder="Nama Anda" />
         </Form.Item>
 
         <Form.Item
@@ -64,7 +57,7 @@ const CategoryForm: React.FC<CustomFormProps<User>> = ({ visible, isEditing, onC
           validateStatus={errors.email ? "error" : ""}
           help={errors.email?.join(", ")}
         >
-          <Input />
+          <Input placeholder="user@mail.com" />
         </Form.Item>
 
         <Form.Item
@@ -73,7 +66,7 @@ const CategoryForm: React.FC<CustomFormProps<User>> = ({ visible, isEditing, onC
           validateStatus={errors.role ? "error" : ""}
           help={errors.role?.join(", ")}
         >
-          <Select>
+          <Select placeholder="Pilih Role">
             {
               ["READER", "REPORTER", "EDITOR", "ADMIN"].map((role) => (
                 <Select.Option key={role} value={role}>
@@ -90,14 +83,12 @@ const CategoryForm: React.FC<CustomFormProps<User>> = ({ visible, isEditing, onC
           validateStatus={errors.departmentId ? "error" : ""}
           help={errors.departmentId?.join(", ")}
         >
-          <Select>
-            {
-              departments.map((d) => (
-                <Select.Option key={d.id} value={d.name}>
-                  {d.name}
-                </Select.Option>
-              ))
-            }
+          <Select placeholder="Pilih Departemen">
+            {departments.map((d) => (
+              <Select.Option key={d.id} value={d.id}>
+                {d.name}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
 
@@ -107,7 +98,7 @@ const CategoryForm: React.FC<CustomFormProps<User>> = ({ visible, isEditing, onC
           validateStatus={errors.password ? "error" : ""}
           help={errors.password?.join(", ")}
         >
-          <Input.Password />
+          <Input.Password placeholder="Password Anda" />
         </Form.Item>
       </Form>
     </Modal>
