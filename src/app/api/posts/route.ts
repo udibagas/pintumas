@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { z } from "zod";
+import { schema } from "@/validations/post.validation";
 
 export const dynamic = "force-dynamic"; // Ensure this route is always fresh
 
@@ -59,24 +59,6 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
-      title,
-      content,
-      authorId = "cmbhc6iz30000qww5bpfshhl1",
-      categoryId = 1,
-      published = false,
-      featured = false,
-    } = body;
-
-    const schema = z.object({
-      title: z.string().nonempty("Judul harus diisi"),
-      content: z.string().nonempty("Konten harus diisi"),
-      published: z.boolean().optional(),
-      featured: z.boolean().optional(),
-      authorId: z.string().optional(),
-      categoryId: z.number().optional(),
-    });
-
     const vaidationResult = schema.safeParse(body);
 
     if (!vaidationResult.success) {
@@ -85,23 +67,19 @@ export async function POST(request: NextRequest) {
           message: "Validation failed",
           errors: vaidationResult.error.flatten().fieldErrors,
         },
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
+    const restData = vaidationResult.data;
+
     const post = await prisma.post.create({
       data: {
-        title,
-        slug: title.toLowerCase().replace(/\s+/g, "-").slice(0, 50),
-        excerpt: content.slice(0, 150),
-        published,
-        publishedAt: published ? new Date() : null,
-        featured,
-        content,
-        authorId,
-        categoryId,
+        ...restData,
+        slug: restData.title.toLowerCase().replace(/\s+/g, "-").slice(0, 50),
+        excerpt: restData.content.slice(0, 150),
+        publishedAt: restData.published ? new Date() : null,
+        authorId: "cmbhc6iz30000qww5bpfshhl1",
       },
       include: {
         author: true,

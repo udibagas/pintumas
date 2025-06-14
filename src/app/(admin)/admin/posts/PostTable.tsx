@@ -11,6 +11,7 @@ import moment from "moment";
 import DataTable from "@/components/DataTable";
 import { useDataTableContext } from "@/hooks/useDataTable";
 import { redirect } from "next/navigation";
+import { updateItem } from "@/lib/api-client";
 
 export default function PostTable() {
   const {
@@ -31,14 +32,24 @@ export default function PostTable() {
       key: "featured",
       align: "center" as const,
       width: 100,
-      render: (_text: string, record: Post) => <Switch value={record.featured} size={'small'} />
+      render: (_text: string, record: Post) => (
+        <Switch defaultValue={record.featured} size={'small'} onChange={async (c) => {
+          await updateItem<Post>(`/api/posts`, record.id, { ...record, featured: c });
+          refreshData();
+        }} />
+      )
     },
     {
       title: "Diterbitkan",
       key: "published",
       align: "center" as const,
       width: 100,
-      render: (_text: string, record: Post) => <Switch value={record.published} size={'small'} />
+      render: (_text: string, record: Post) => (
+        <Switch defaultValue={record.published} size={'small'} onChange={async (c) => {
+          await updateItem<Post>(`/api/posts`, record.id, { ...record, published: c });
+          refreshData();
+        }} />
+      )
     },
     {
       title: <ReloadOutlined onClick={refreshData} />,

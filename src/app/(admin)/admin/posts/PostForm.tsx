@@ -123,7 +123,7 @@ export default function PostForm({ values }: { values: Post }) {
                 <Select placeholder="Pilih Departemen">
                   {
                     departments.map((department) => (
-                      <Select.Option key={department.id} value={department.name}>
+                      <Select.Option key={department.id} value={department.id}>
                         {department.name}
                       </Select.Option>
                     ))
