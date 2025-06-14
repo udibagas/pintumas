@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { schema } from "@/validations/category.validation";
 
 export async function GET(request: NextRequest) {
   try {
@@ -36,17 +37,26 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { name } = await request.json();
+  const body = await request.json();
+  const vaidationResult = schema.safeParse(body);
 
-  if (!name) {
-    return NextResponse.json({ message: "Name is required" }, { status: 400 });
+  if (!vaidationResult.success) {
+    return NextResponse.json(
+      {
+        message: "Validation failed",
+        errors: vaidationResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
+
+  const validatedData = vaidationResult.data;
 
   try {
     const category = await prisma.category.create({
       data: {
-        name,
-        slug: name.toLowerCase().replace(/\s+/g, "-"),
+        ...validatedData,
+        slug: validatedData.name.toLowerCase().replace(/\s+/g, "-"),
       },
     });
     return NextResponse.json(category, { status: 201 });
