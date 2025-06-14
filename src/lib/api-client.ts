@@ -49,7 +49,10 @@ export async function getItems<T>(
   return data;
 }
 
-export async function getItem<T>(endpoint: string, id: number): Promise<T> {
+export async function getItem<T>(
+  endpoint: string,
+  id: number | string
+): Promise<T> {
   const { data } = await client.get<T>(`${endpoint}/${id}`);
   return data;
 }

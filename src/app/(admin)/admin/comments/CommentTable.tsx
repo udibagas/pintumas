@@ -15,7 +15,7 @@ interface CommentWithDetails extends Comment {
 }
 
 export default function CommentTable() {
-  const { refreshData, handleDelete, setSearch } = useDataTableContext()
+  const { refreshData, handleDelete, setSearch, setCurrentPage } = useDataTableContext()
 
   const columns = [
     { title: "Komentar", key: "id", render: (_: string, record: CommentWithDetails) => <CommentDetail comment={record} /> },
@@ -44,6 +44,7 @@ export default function CommentTable() {
           className="w-40"
           onSearch={(value) => {
             setSearch(value);
+            setCurrentPage(1)
           }}
         />
       </PageHeader>

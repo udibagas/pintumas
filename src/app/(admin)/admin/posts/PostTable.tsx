@@ -1,9 +1,8 @@
 'use client';
 
 import React from "react";
-import { Avatar, Button, Divider, Image, Input, Switch, Tag } from "antd";
-import { ApartmentOutlined, ClockCircleOutlined, CommentOutlined, EyeOutlined, LikeOutlined, PlusOutlined, ReloadOutlined, TagsOutlined, UserOutlined } from "@ant-design/icons";
-import PostForm from "./PostForm";
+import { Avatar, Divider, Image, Input, Switch, Tag } from "antd";
+import { ApartmentOutlined, ClockCircleOutlined, CommentOutlined, EyeOutlined, LikeOutlined, ReloadOutlined, TagsOutlined, UserOutlined } from "@ant-design/icons";
 import PageHeader from "@/components/PageHeader";
 import ActionButton from "@/components/buttons/ActionButton";
 import { Category, Department, Media, Post, User } from "@prisma/client";
@@ -15,14 +14,7 @@ import { redirect } from "next/navigation";
 
 export default function PostTable() {
   const {
-    showForm,
-    isEditing,
-    errors,
-    form,
-    handleModalClose,
-    handleSubmit,
     refreshData,
-    handleEdit,
     handleDelete,
     setSearch,
     setCurrentPage,
@@ -35,14 +27,14 @@ export default function PostTable() {
       render: (_text: string, record: Post & { author?: User, category?: Category, department?: Department, media?: Media[] }) => <PostDetail {...record} />,
     },
     {
-      title: "Featured",
+      title: "Unggulan",
       key: "featured",
       align: "center" as const,
       width: 100,
       render: (_text: string, record: Post) => <Switch value={record.featured} size={'small'} />
     },
     {
-      title: "Published",
+      title: "Diterbitkan",
       key: "published",
       align: "center" as const,
       width: 100,
@@ -54,7 +46,7 @@ export default function PostTable() {
       width: 80,
       align: "center" as const,
       render: (_text: string, record: Post) => (
-        <ActionButton onEdit={() => handleEdit(record)} onDelete={() => handleDelete(record.id)} />
+        <ActionButton onEdit={() => redirect(`/admin/post/${record.id}/edit`)} onDelete={() => handleDelete(record.id)} />
       ),
     },
   ];
@@ -73,21 +65,9 @@ export default function PostTable() {
             setCurrentPage(1)
             setSearch(value)
           }} />
-        <Button color="default" variant="solid" icon={<PlusOutlined />} onClick={() => redirect('/admin/posts/create')}>
-          Tambah Postingan
-        </Button>
       </PageHeader>
 
       <DataTable<Post> columns={columns} />
-
-      <PostForm
-        visible={showForm}
-        isEditing={isEditing}
-        onCancel={handleModalClose}
-        onOk={handleSubmit}
-        errors={errors}
-        form={form}
-      />
     </>
   );
 };
@@ -106,7 +86,7 @@ function PostDetail(props: Post & { author?: User, category?: Category, departme
       </div>
       <div className="flex flex-col gap-2">
         <div className="text-lg">
-          <Link href={`/posts/${props.slug}`}>
+          <Link href={`/admin/posts/${props.id}/edit`}>
             {props.published ? props.title : <span className="text-gray-500">{props.title} (Draft)</span>}
           </Link>
         </div>

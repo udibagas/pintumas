@@ -1,8 +1,9 @@
 'use client';
 
-import { Post } from "@/types";
-import { ThumbsUp } from "lucide-react";
+import { Post } from "@prisma/client";
+import { Button } from "antd";
 import { useState } from "react";
+import { HeartOutlined } from "@ant-design/icons";
 
 export default function LikeButton({ post }: { post: Post }) {
   const [likeCount, setLikeCount] = useState(post.likeCount ?? 0);
@@ -34,9 +35,9 @@ export default function LikeButton({ post }: { post: Post }) {
   };
 
   return (
-    <>
-      <ThumbsUp className="cursor-pointer text-orange-300 hover:text-orange-400 size-4" onClick={handleLike} />
-      <span>{likeCount}</span>
-    </>
+    <Button type="text" onClick={handleLike}>
+      <HeartOutlined /> {" "}
+      {likeCount}
+    </Button>
   )
 }

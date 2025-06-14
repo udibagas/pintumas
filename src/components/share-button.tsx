@@ -1,7 +1,8 @@
 'use client';
-import { Post } from "@/types";
-import { Share2 } from "lucide-react";
+import { Post } from "@prisma/client";
+import { Button } from "antd";
 import { useState } from "react";
+import { ShareAltOutlined } from "@ant-design/icons";
 
 export default function ShareButton({ post }: { post: Post }) {
   const [copied, setCopied] = useState(false);
@@ -35,6 +36,8 @@ export default function ShareButton({ post }: { post: Post }) {
   };
 
   return (
-    <Share2 className="cursor-pointer text-orange-300 hover:text-orange-400 size-4" onClick={handleShare} />
+    <Button type="text" onClick={handleShare} title="Bagikan">
+      <ShareAltOutlined onClick={handleShare} />
+    </Button>
   )
 }
