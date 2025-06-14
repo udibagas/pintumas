@@ -46,7 +46,7 @@ export default function PostTable() {
       width: 80,
       align: "center" as const,
       render: (_text: string, record: Post) => (
-        <ActionButton onEdit={() => redirect(`/admin/post/${record.id}/edit`)} onDelete={() => handleDelete(record.id)} />
+        <ActionButton onEdit={() => redirect(`/admin/posts/${record.id}/edit`)} onDelete={() => handleDelete(record.id)} />
       ),
     },
   ];
