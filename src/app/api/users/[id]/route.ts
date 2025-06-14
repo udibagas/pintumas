@@ -10,10 +10,7 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { id },
-    });
-
+    const user = await prisma.user.findUnique({ where: { id } });
     if (!user) {
       return NextResponse.json(
         { message: "Category not found" },
@@ -55,7 +52,7 @@ export async function PUT(
         ...validatedData,
         password: validatedData.password
           ? hashSync(validatedData.password, 10)
-          : undefined, // Hash the password if provided
+          : undefined,
       },
     });
 
@@ -71,22 +68,12 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Category ID is required" },
-      { status: 400 }
-    );
-  }
+  const { id } = await params;
 
   try {
-    const user = await prisma.user.delete({
-      where: { id },
-    });
-
+    const user = await prisma.user.delete({ where: { id } });
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
     console.error("Error deleting user:", error);
