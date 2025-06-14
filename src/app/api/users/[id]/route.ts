@@ -46,15 +46,15 @@ export async function PUT(
     );
   }
 
-  const restData = vaidationResult.data;
+  const validatedData = vaidationResult.data;
 
   try {
     const user = await prisma.user.update({
       where: { id },
       data: {
-        ...restData,
-        password: restData.password
-          ? hashSync(restData.password, 10)
+        ...validatedData,
+        password: validatedData.password
+          ? hashSync(validatedData.password, 10)
           : undefined, // Hash the password if provided
       },
     });
