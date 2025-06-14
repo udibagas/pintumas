@@ -2,14 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Input, message, Row, Select, Switch, Upload, UploadFile } from "antd";
-import { Category, Department, Media, Post } from "@prisma/client";
+import { Category, Department, Media, Post, PostMedia } from "@prisma/client";
 import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
 import { PaginatedData, ServerErrorResponse } from "@/types";
 import client, { createItem, getItems, updateItem } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
 
-export default function PostForm({ values }: { values: Post }) {
-  const [form] = Form.useForm<Post>();
+interface PostWithMedia extends Post {
+  PostMedia: (PostMedia & { media: Media })[];
+}
+
+export default function PostForm({ values }: { values: PostWithMedia }) {
+  const [form] = Form.useForm<PostWithMedia>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [categories, setCategories] = useState<Category[]>([]);
@@ -62,12 +66,14 @@ export default function PostForm({ values }: { values: Post }) {
   useEffect(() => {
     if (values) {
       form.setFieldsValue(values);
+      setMedia(values.PostMedia.map(m => m.media));
     } else {
       form.resetFields();
     }
   }, [values, form]);
 
-  const normFile = (e: unknown) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e[0].response.file;
     }
@@ -120,7 +126,7 @@ export default function PostForm({ values }: { values: Post }) {
               withCredentials
               onChange={({ file }) => {
                 if (file.status === 'done') {
-                  console.log('File uploaded successfully:', file.response);
+                  console.log('File uploaded successfully:', file);
                   setMedia((prev) => [...prev, file.response]);
                 }
               }}

@@ -133,6 +133,7 @@ export function DataTableProvider<T extends { id: number | string }>({ url, chil
       errors,
       isEditing,
       currentPage,
+      pageSize,
       setCurrentPage,
       setPageSize,
       setSearch,

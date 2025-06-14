@@ -4,16 +4,20 @@ import PageHeader from "@/components/PageHeader";
 import { Card } from "antd";
 import PostForm from "../../PostForm";
 import { getItem } from "@/lib/api-client";
-import { Post } from "@prisma/client";
+import { Media, Post, PostMedia } from "@prisma/client";
 import { useEffect, useState } from "react";
 
+interface PostWithMedia extends Post {
+  PostMedia: (PostMedia & { media: Media })[];
+}
+
 export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
-  const [post, setPost] = useState<Post>({} as Post);
+  const [post, setPost] = useState<PostWithMedia | null>(null);
 
   useEffect(() => {
     const fetchPost = (async () => {
       const postId = await params.then(p => p.id);
-      const fetchedPost = await getItem<Post>(`/api/posts`, postId);
+      const fetchedPost = await getItem<PostWithMedia>(`/api/posts`, postId);
       if (fetchedPost) {
         setPost(fetchedPost);
       }
@@ -31,7 +35,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
       </PageHeader>
 
       <Card>
-        <PostForm values={post} />
+        {post ? <PostForm values={post} /> : 'Loading...'}
       </Card>
     </>
   );

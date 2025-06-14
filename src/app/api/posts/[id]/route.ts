@@ -11,6 +11,13 @@ export async function GET(
   try {
     const post = await prisma.post.findUnique({
       where: { id: parseInt(id, 10) },
+      include: {
+        PostMedia: {
+          include: {
+            media: true,
+          },
+        },
+      },
     });
 
     if (!post) {

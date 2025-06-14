@@ -14,6 +14,7 @@ interface DataTableContextProps {
     errors: Record<string, string[]>;
     isEditing: boolean;
     currentPage: number;
+    pageSize: number;
     setCurrentPage: (page: number) => void;
     setPageSize: (size: number) => void;
     setSearch: (search: string) => void;

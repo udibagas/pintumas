@@ -97,7 +97,7 @@ function PostDetail(props: PostWithRelations) {
         <Image
           width={200}
           height={150}
-          className="rounded-md"
+          className="rounded-md object-cover mb-2"
           src={props.PostMedia?.[0]?.media.url ?? 'https://placehold.co/400x300'}
           alt={props.title}
         />

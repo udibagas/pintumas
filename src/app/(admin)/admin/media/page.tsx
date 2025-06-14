@@ -1,9 +1,14 @@
+'use client';
+
+import React from "react";
+import { Category } from "@prisma/client";
+import { DataTableProvider } from "@/providers/DataTableProvider";
+import MediaList from "./MediaList";
+
 export default function MediaPage() {
   return (
-    <div>
-      <h1>Media Page</h1>
-      <p>This is the media management section for administrators.</p>
-      {/* Add your media management components here */}
-    </div>
+    <DataTableProvider<Category> url="/api/media">
+      <MediaList />
+    </DataTableProvider>
   );
-}
+};
