@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Image, Input, message, Row, Select, Switch, Upload } from "antd";
+import { Button, Col, Form, Input, message, Row, Select, Switch, Upload, UploadFile } from "antd";
 import { Category, Department, Media, Post } from "@prisma/client";
 import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
 import { PaginatedData, ServerErrorResponse } from "@/types";
@@ -17,14 +17,22 @@ export default function PostForm({ values }: { values: Post }) {
   const [media, setMedia] = useState<Media[]>([]);
   const router = useRouter();
 
-  const onOk = async (values: Post) => {
+  const onOk = async (values: Post & { file?: UploadFile[] }) => {
     try {
       setIsSubmitting(true);
       setErrors({});
 
+      const { file, ...rest } = values;
+      console.log(file)
+
+      const data = {
+        ...rest,
+        PostMedia: media.map(m => ({ mediaId: m.id })),
+      }
+
       const post = values.id
-        ? await updateItem<Post>('/api/posts', values.id, values)
-        : await createItem<Post>('/api/posts', values);
+        ? await updateItem<Post>('/api/posts', values.id, data)
+        : await createItem<Post>('/api/posts', data);
 
       console.log('Post saved:', post);
       message.success('Postingan berhasil disimpan!');
@@ -103,16 +111,6 @@ export default function PostForm({ values }: { values: Post }) {
         </Col>
 
         <Col span={8}>
-          {/* {media.length > 0 && (
-            <div className="flex justify-center items-center gap-2">
-              {media.map((media) => (
-                <div key={media.id} className="mb-4">
-                  <Image src={media.url} alt="" className="w-full h-auto" />
-                </div>
-              ))}
-            </div>
-          )} */}
-
           <Form.Item name="file" label="Gambar" valuePropName="fileList" getValueFromEvent={normFile}>
             <Upload
               name="file"

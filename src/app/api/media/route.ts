@@ -11,16 +11,15 @@ export async function POST(req: NextRequest) {
   // Save file locally
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  let uploadsDir = path.join(process.cwd(), "public", "uploads");
-  uploadsDir += moment().format("/YYYY/MM/DD");
-  await fs.mkdir(uploadsDir, { recursive: true });
+  const uploadsDir = path.join(process.cwd(), "public", "uploads");
+  const dir = moment().format("/YYYY/MM/DD");
+  await fs.mkdir(uploadsDir + dir, { recursive: true });
 
   const fileName = `${Date.now()}-${file.name}`;
-  const filePath = path.join(uploadsDir, fileName);
+  const filePath = path.join(uploadsDir + dir, fileName);
   await fs.writeFile(filePath, buffer);
 
-  // Generate URL (assuming /public is served at /)
-  const url = `/uploads/${fileName}`;
+  const url = `/uploads/${dir}/${fileName}`;
 
   // Optionally, get image dimensions if needed (requires extra library)
   let width = null;
@@ -46,6 +45,8 @@ export async function POST(req: NextRequest) {
         : "DOCUMENT",
       width,
       height,
+      size: file.size,
+      filename: file.name,
     },
   });
 

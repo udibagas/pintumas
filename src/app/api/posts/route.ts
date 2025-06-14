@@ -73,6 +73,9 @@ export async function POST(request: NextRequest) {
 
     const validatedData = vaidationResult.data;
 
+    // sementara ini kita gunakan user id statis
+    const user = await prisma.user.findFirst();
+
     const post = await prisma.post.create({
       data: {
         ...validatedData,
@@ -82,7 +85,8 @@ export async function POST(request: NextRequest) {
           .slice(0, 50),
         excerpt: validatedData.content.slice(0, 150),
         publishedAt: validatedData.published ? new Date() : null,
-        authorId: "cmbhc6iz30000qww5bpfshhl1",
+        authorId: user?.id || "1", // sementara
+        PostMedia: { createMany: { data: body.PostMedia ?? [] } },
       },
       include: {
         author: true,

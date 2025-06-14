@@ -74,6 +74,7 @@ async function seed() {
         type: "IMAGE",
         width: 600,
         height: 400,
+        filename: `example-${i + 1}.jpg`,
       },
     });
 

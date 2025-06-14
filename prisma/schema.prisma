@@ -102,6 +102,7 @@ model PostLike {
 model Media {
   id        Int         @id @default(autoincrement())
   url       String // Cloud URL (S3, Cloudinary, etc.)
+  filename  String // Original filename
   caption   String? // Optional caption for media
   type      MediaType
   width     Int? // For images/videos
