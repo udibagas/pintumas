@@ -48,16 +48,19 @@ export async function PUT(
     );
   }
 
-  const restData = vaidationResult.data;
+  const validatedData = vaidationResult.data;
 
   try {
     const post = await prisma.post.update({
       where: { id: parseInt(id, 10) },
       data: {
-        ...restData,
-        slug: restData.title.toLowerCase().replace(/\s+/g, "-").slice(0, 50),
-        excerpt: restData.content.slice(0, 150),
-        publishedAt: restData.published ? new Date() : null,
+        ...validatedData,
+        slug: validatedData.title
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .slice(0, 50),
+        excerpt: validatedData.content.slice(0, 150),
+        publishedAt: validatedData.published ? new Date() : null,
       },
     });
 

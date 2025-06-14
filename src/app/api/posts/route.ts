@@ -71,14 +71,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const restData = vaidationResult.data;
+    const validatedData = vaidationResult.data;
 
     const post = await prisma.post.create({
       data: {
-        ...restData,
-        slug: restData.title.toLowerCase().replace(/\s+/g, "-").slice(0, 50),
-        excerpt: restData.content.slice(0, 150),
-        publishedAt: restData.published ? new Date() : null,
+        ...validatedData,
+        slug: validatedData.title
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .slice(0, 50),
+        excerpt: validatedData.content.slice(0, 150),
+        publishedAt: validatedData.published ? new Date() : null,
         authorId: "cmbhc6iz30000qww5bpfshhl1",
       },
       include: {

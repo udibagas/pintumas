@@ -53,13 +53,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const restData = vaidationResult.data;
+  const validatedData = vaidationResult.data;
 
   try {
     const user = await prisma.user.create({
       data: {
-        ...restData,
-        password: hashSync(restData.password!, 10),
+        ...validatedData,
+        password: hashSync(validatedData.password!, 10),
       },
     });
     return NextResponse.json(user, { status: 201 });
