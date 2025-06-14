@@ -1,23 +1,18 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 import path from "path";
 import fs from "fs/promises";
-import { auth } from "next-auth";
+import moment from "moment";
 
-export async function POST(req: Request) {
-  const session = await auth();
-  if (!session || session.user.role !== "REPORTER") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
+export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const file = formData.get("file") as File;
-  const articleId = Number(formData.get("articleId"));
 
   // Save file locally
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
+  let uploadsDir = path.join(process.cwd(), "public", "uploads");
+  uploadsDir += moment().format("/YYYY/MM/DD");
   await fs.mkdir(uploadsDir, { recursive: true });
 
   const fileName = `${Date.now()}-${file.name}`;
@@ -41,7 +36,7 @@ export async function POST(req: Request) {
     }
   }
 
-  await prisma.media.create({
+  const media = await prisma.media.create({
     data: {
       url,
       type: file.type.startsWith("image")
@@ -51,9 +46,8 @@ export async function POST(req: Request) {
         : "DOCUMENT",
       width,
       height,
-      articleId,
     },
   });
 
-  return NextResponse.json({ success: true, url });
+  return NextResponse.json(media, { status: 201 });
 }

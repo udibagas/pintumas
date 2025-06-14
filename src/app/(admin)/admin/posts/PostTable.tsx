@@ -5,13 +5,20 @@ import { Avatar, Divider, Image, Input, Switch, Tag } from "antd";
 import { ApartmentOutlined, ClockCircleOutlined, CommentOutlined, EyeOutlined, LikeOutlined, ReloadOutlined, TagsOutlined, UserOutlined } from "@ant-design/icons";
 import PageHeader from "@/components/PageHeader";
 import ActionButton from "@/components/buttons/ActionButton";
-import { Category, Department, Media, Post, User } from "@prisma/client";
+import { Category, Department, Media, Post, PostMedia, User } from "@prisma/client";
 import Link from "next/link";
 import moment from "moment";
 import DataTable from "@/components/DataTable";
 import { useDataTableContext } from "@/hooks/useDataTable";
 import { redirect } from "next/navigation";
 import { updateItem } from "@/lib/api-client";
+
+interface PostWithRelations extends Post {
+  author?: User;
+  category?: Category;
+  department?: Department;
+  PostMedia?: (PostMedia & { media: Media })[];
+}
 
 export default function PostTable() {
   const {
@@ -25,7 +32,7 @@ export default function PostTable() {
     {
       title: "Konten",
       key: "title",
-      render: (_text: string, record: Post & { author?: User, category?: Category, department?: Department, media?: Media[] }) => <PostDetail {...record} />,
+      render: (_text: string, record: PostWithRelations) => <PostDetail {...record} />,
     },
     {
       title: "Unggulan",
@@ -83,7 +90,7 @@ export default function PostTable() {
   );
 };
 
-function PostDetail(props: Post & { author?: User, category?: Category, department?: Department, media?: Media[] }) {
+function PostDetail(props: PostWithRelations) {
   return (
     <div className="flex items-center gap-4">
       <div className="flex-shrink-0">
@@ -91,7 +98,7 @@ function PostDetail(props: Post & { author?: User, category?: Category, departme
           width={200}
           height={150}
           className="rounded-md"
-          src={props.media?.[0]?.url ?? 'https://placehold.co/400x300'}
+          src={props.PostMedia?.[0]?.media.url ?? 'https://placehold.co/400x300'}
           alt={props.title}
         />
       </div>

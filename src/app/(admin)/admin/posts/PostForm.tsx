@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Image, Input, message, Row, Select, Switch } from "antd";
-import { Category, Department, Post } from "@prisma/client";
-import { SaveOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Image, Input, message, Row, Select, Switch, Upload } from "antd";
+import { Category, Department, Media, Post } from "@prisma/client";
+import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
 import { PaginatedData, ServerErrorResponse } from "@/types";
-import { createItem, getItems, updateItem } from "@/lib/api-client";
+import client, { createItem, getItems, updateItem } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
 
 export default function PostForm({ values }: { values: Post }) {
@@ -14,6 +14,7 @@ export default function PostForm({ values }: { values: Post }) {
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [categories, setCategories] = useState<Category[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
+  const [media, setMedia] = useState<Media[]>([]);
   const router = useRouter();
 
   const onOk = async (values: Post) => {
@@ -58,6 +59,14 @@ export default function PostForm({ values }: { values: Post }) {
     }
   }, [values, form]);
 
+  const normFile = (e: unknown) => {
+    if (Array.isArray(e)) {
+      return e[0].response.file;
+    }
+
+    return e && e.fileList;
+  };
+
   return (
     <Form
       variant="filled"
@@ -94,7 +103,41 @@ export default function PostForm({ values }: { values: Post }) {
         </Col>
 
         <Col span={8}>
-          <Image src="https://picsum.photos/600/400" alt="Foto" preview={false} className="rounded-lg mb-8" />
+          {/* {media.length > 0 && (
+            <div className="flex justify-center items-center gap-2">
+              {media.map((media) => (
+                <div key={media.id} className="mb-4">
+                  <Image src={media.url} alt="" className="w-full h-auto" />
+                </div>
+              ))}
+            </div>
+          )} */}
+
+          <Form.Item name="file" label="Gambar" valuePropName="fileList" getValueFromEvent={normFile}>
+            <Upload
+              name="file"
+              listType="picture"
+              action='/api/media'
+              accept="image/*, application/*"
+              withCredentials
+              onChange={({ file }) => {
+                if (file.status === 'done') {
+                  console.log('File uploaded successfully:', file.response);
+                  setMedia((prev) => [...prev, file.response]);
+                }
+              }}
+              onRemove={async (file) => {
+                console.log('Removing file:', file);
+                const id = file.response?.id;
+                if (!id) return;
+                await client.delete(`/api/media/${id}`);
+                setMedia((prev) => prev.filter((m) => m.id !== id));
+              }}
+            >
+              <Button icon={<UploadOutlined />}>Pilih File</Button>
+            </Upload>
+          </Form.Item>
+
           <Row gutter={40}>
             <Col span={12}>
               <Form.Item

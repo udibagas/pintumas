@@ -26,9 +26,9 @@ export async function GET(request: NextRequest) {
         where,
         include: {
           author: true,
-          media: true,
           category: true,
           department: true,
+          PostMedia: { include: { media: true } },
         },
         orderBy: { createdAt: "desc" },
         skip,
@@ -86,8 +86,9 @@ export async function POST(request: NextRequest) {
       },
       include: {
         author: true,
-        media: true,
         category: true,
+        department: true,
+        PostMedia: { include: { media: true } },
       },
     });
 

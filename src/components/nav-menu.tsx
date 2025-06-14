@@ -7,6 +7,7 @@ import {
   BarChartOutlined,
   CommentOutlined,
   FileDoneOutlined,
+  FileImageOutlined,
   TagsOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -34,6 +35,7 @@ const items: MenuItem[] = [
   getItem(<Link href="/admin/posts">Post</Link>, '/admin/posts', <FileDoneOutlined />),
   getItem(<Link href="/admin/categories">Kategori</Link>, '/admin/categories', <TagsOutlined />),
   getItem(<Link href="/admin/comments">Komentar</Link>, '/admin/comments', <CommentOutlined />),
+  getItem(<Link href="/admin/media">Media</Link>, '/admin/media', <FileImageOutlined />),
   getItem(<Link href="/admin/departments">Departemen</Link>, '/admin/departments', <ApartmentOutlined />),
   getItem(<Link href="/admin/users">Users</Link>, '/admin/users', <UserOutlined />),
 ];

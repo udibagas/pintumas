@@ -64,7 +64,19 @@ async function seed() {
     excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   };
 
-  for (let i = 20; i < 30; i++) {
+  await prisma.post.deleteMany({});
+
+  for (let i = 1; i < 20; i++) {
+    const media = await prisma.media.create({
+      data: {
+        url: "https://picsum.photos/600/400?random=" + i,
+        caption: `Gambar contoh ${i + 1}`,
+        type: "IMAGE",
+        width: 600,
+        height: 400,
+      },
+    });
+
     await prisma.post.create({
       data: {
         title: `${post.title} - ${i + 1}`,
@@ -78,16 +90,10 @@ async function seed() {
         categoryId: Math.floor(Math.random() * 5) + 1, // Random category ID between 1 and 5
         departmentId: 1,
         featured: i % 2 === 0, // Set featured for even indexed posts
-        media: {
-          create: [
-            {
-              url: "https://picsum.photos/600/400?random=" + i,
-              caption: `Gambar contoh ${i + 1}`,
-              type: "IMAGE",
-              width: 600,
-              height: 400,
-            },
-          ],
+        PostMedia: {
+          create: {
+            mediaId: media.id,
+          },
         },
       },
     });
