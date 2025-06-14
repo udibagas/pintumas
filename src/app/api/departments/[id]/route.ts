@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { schema } from "@/validations/department.validation";
 
 export async function GET(
   request: NextRequest,
@@ -34,16 +35,22 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const { name, description } = await request.json();
+  const body = await request.json();
+  const vaidationResult = schema.safeParse(body);
 
-  if (!name) {
-    return NextResponse.json({ message: "Name is required" }, { status: 400 });
+  if (!vaidationResult.success) {
+    return NextResponse.json(
+      {
+        message: "Validation failed",
+        errors: vaidationResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
-
   try {
     const department = await prisma.department.update({
       where: { id: parseInt(id, 10) },
-      data: { name, description },
+      data: vaidationResult.data,
     });
 
     return NextResponse.json(department, { status: 200 });
