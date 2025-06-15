@@ -1,21 +1,18 @@
 'use client';
 
-import { Comment } from "@/types";
+import { CommentWithAuthor } from "@/types";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { LogIn, Send } from "lucide-react";
 import { redirect } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function CommentForm({
   postId,
   onCommentAdded,
 }: {
   postId: number;
-  onCommentAdded: (comment: Comment) => void;
+  onCommentAdded: (comment: CommentWithAuthor) => void;
 }) {
-  const queryClient = useQueryClient();
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -39,10 +36,6 @@ export default function CommentForm({
 
       const comment = await response.json();
       onCommentAdded(comment);
-
-      queryClient.invalidateQueries({
-        queryKey: ['comments', postId],
-      });
       form.reset()
     } catch (error) {
       console.error("Error adding comment:", error);
@@ -60,11 +53,10 @@ export default function CommentForm({
       />
 
       <div>
-        <Button type="submit" className="cursor-pointer bg-orange-400 hover:bg-orange-500 text-white">
+        <Button type="submit" color="default">
           <Send />
           Kirim komentar
         </Button>
-
 
         <Button
           type="button"

@@ -71,3 +71,7 @@ export interface PostWithRelations extends Post {
 export interface CategoryWithRelations extends Category {
   posts?: PostWithRelations[];
 }
+
+export interface CommentWithAuthor extends Comment {
+  author: User;
+}
