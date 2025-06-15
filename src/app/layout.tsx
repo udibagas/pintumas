@@ -19,6 +19,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang="en">
       <head>
         <title>PINTUMAS - Pusat Informasi Terpadu Pelabuhan Tanjung Mas</title>
+        <link rel="shortcut icon" href="/pintumas.png" type="image/x-icon" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

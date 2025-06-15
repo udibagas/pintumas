@@ -1,4 +1,5 @@
 import { Card, Carousel, Image } from "antd";
+const { Meta } = Card;
 
 export default function FeaturedPost() {
   return (
@@ -9,7 +10,7 @@ export default function FeaturedPost() {
             hoverable
             cover={<Image preview={false} alt="featured news" src={`https://placehold.co/600x400`} />}
           >
-            <Card.Meta
+            <Meta
               title="Breaking News Headline"
               description="Short description of the featured news story"
             />

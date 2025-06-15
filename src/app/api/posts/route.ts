@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { schema } from "@/validations/post.validation";
+import { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic"; // Ensure this route is always fresh
 
@@ -12,7 +13,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * pageSize;
     const search = searchParams.get("search") || "";
 
-    const where = search
+    const where: Prisma.PostWhereInput = search
       ? {
           OR: [
             { title: { contains: search, mode: "insensitive" as const } },

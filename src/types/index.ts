@@ -1,3 +1,11 @@
+import {
+  Category,
+  Department,
+  Media,
+  Post,
+  PostMedia,
+  User,
+} from "@prisma/client";
 import { FormInstance } from "antd";
 import { AxiosError } from "axios";
 
@@ -52,3 +60,14 @@ export type ServerErrorResponse = AxiosError & {
     };
   };
 };
+
+export interface PostWithRelations extends Post {
+  author: User;
+  category: Category;
+  department: Department;
+  PostMedia?: (PostMedia & { media: Media })[];
+}
+
+export interface CategoryWithRelations extends Category {
+  posts?: PostWithRelations[];
+}

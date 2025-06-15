@@ -3,6 +3,8 @@ import { hashSync } from "bcrypt";
 const prisma = new PrismaClient();
 
 async function seed() {
+  await prisma.$queryRaw`TRUNCATE TABLE "Post", "Category", "User", "PostMedia", "Media" RESTART IDENTITY CASCADE`;
+
   // Create a default admin user
   const admin = await prisma.user.upsert({
     where: { email: "admin@mail.com" },

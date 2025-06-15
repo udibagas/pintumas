@@ -1,3 +1,5 @@
+'use client';
+
 import { Divider, Space, Typography, Row, Col, Button } from "antd";
 import { StarOutlined } from "@ant-design/icons";
 import { Category } from "@prisma/client";
@@ -11,7 +13,7 @@ export default function Categories() {
   useEffect(() => {
     fetch('/api/categories')
       .then(response => response.json())
-      .then(data => setCategories(data))
+      .then(data => setCategories(data.rows))
       .catch(error => console.error('Error fetching categories:', error));
   }, [])
 

@@ -1,31 +1,60 @@
 import { Divider, Space, Typography, List, Image } from "antd";
 const { Text } = Typography;
-import { FireOutlined } from "@ant-design/icons";
+import { CommentOutlined, EyeOutlined, FireOutlined, LikeOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { PostWithRelations } from "@/types";
+import { getItems } from "@/lib/api-client";
+import Link from "next/link";
 
 export default function PopularPost() {
+  const [posts, setPosts] = useState<PostWithRelations[]>([]);
+
+  useEffect(() => {
+    getItems<PostWithRelations[]>("/api/posts/trending")
+      .then((data) => { setPosts(data); })
+      .catch((error) => { console.error("Error fetching trending posts:", error); });
+  }, []);
+
   return (
     <>
       <Divider orientation="left">
         <Space>
           <FireOutlined />
-          <Text strong>Trending Now</Text>
+          <Text strong>Trending</Text>
         </Space>
       </Divider>
 
       <List
         itemLayout="vertical"
-        size="large"
-        dataSource={[1, 2, 3]}
-        renderItem={(item) => (
+        size="small"
+        dataSource={posts}
+        renderItem={(post) => (
           <List.Item
-            key={item}
-            extra={<Image preview={false} width={272} alt="trending news" src={`https://placehold.co/600x400`} />}
+            key={post.id}
+            extra={<Image
+              preview={false}
+              width={120}
+              alt={post.title}
+              src={post.PostMedia?.[0].media.url}
+              fallback={`https://picsum.photos/600/400?random=${post.id}`}
+            />}
           >
             <List.Item.Meta
-              title={<a href="#">Trending News Headline {item}</a>}
-              description="Detailed description of the trending news article with more content"
+              title={<Link href={`/posts/${post.slug}`}>{post.title}</Link>}
+              description={(
+                <>
+                  <EyeOutlined />
+                  <span className="ml-2">{post.viewCount || 0}</span>
+                  <Divider type="vertical" />
+                  <LikeOutlined />
+                  <span className="ml-2">{post.likeCount || 0}</span>
+                  <Divider type="vertical" />
+                  <CommentOutlined />
+                  <span className="ml-2">{post.commentCount || 0}</span>
+                </>
+              )}
             />
-            Content excerpt from the news article...
+            {post.excerpt}
           </List.Item>
         )}
       />
