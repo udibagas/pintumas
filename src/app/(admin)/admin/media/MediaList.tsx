@@ -10,7 +10,7 @@ import { Image, Pagination } from "antd";
 
 export default function MediaList() {
   const { handleAdd, useFetch, setCurrentPage, setPageSize, pageSize } = useDataTableContext()
-  const { isPending, data } = useFetch<PaginatedData<Media>>();
+  const { isPending, data }: { isPending: boolean, data: PaginatedData<Media> } = useFetch<PaginatedData<Media>>();
 
   return (
     <>
@@ -28,7 +28,7 @@ export default function MediaList() {
         {!isPending && (
           <>
             <div className="flex flex-wrap gap-6 mb-6">
-              {data?.rows.map((media) => (
+              {data.rows.map((media) => (
                 <div key={media.id} className="flex flex-col items-center">
                   <Image
                     src={media.url}

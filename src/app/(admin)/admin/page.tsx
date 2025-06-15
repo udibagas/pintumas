@@ -98,7 +98,7 @@ const postColumns = [
     title: 'Title',
     dataIndex: 'title',
     key: 'title',
-    render: (text) => <a>{text}</a>,
+    render: (text: string) => <a>{text}</a>,
   },
   {
     title: 'Category',
@@ -109,7 +109,7 @@ const postColumns = [
     title: 'Views',
     dataIndex: 'views',
     key: 'views',
-    render: (views) => (
+    render: (views: number) => (
       <Space>
         <EyeOutlined />
         {views.toLocaleString()}
@@ -120,7 +120,7 @@ const postColumns = [
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    render: (status) => (
+    render: (status: string) => (
       <Tag color={status === 'published' ? 'green' : 'orange'}>
         {status.toUpperCase()}
       </Tag>
@@ -134,7 +134,7 @@ const postColumns = [
   {
     title: 'Action',
     key: 'action',
-    render: (_, record) => (
+    render: () => (
       <Space size="middle">
         <Button icon={<EditOutlined />} />
         <Button icon={<DeleteOutlined />} danger />
@@ -148,19 +148,19 @@ const viewedColumns = [
     title: 'Title',
     dataIndex: 'title',
     key: 'title',
-    render: (text) => <a>{text}</a>,
+    render: (text: string) => <a>{text}</a>,
   },
   {
     title: 'Views',
     dataIndex: 'views',
     key: 'views',
-    render: (views) => views.toLocaleString(),
+    render: (views: number) => views.toLocaleString(),
   },
   {
     title: 'Growth',
     dataIndex: 'growth',
     key: 'growth',
-    render: (growth) => (
+    render: (growth: number) => (
       <Text type={growth > 0 ? 'success' : 'danger'}>
         {growth > 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
         {Math.abs(growth)}%

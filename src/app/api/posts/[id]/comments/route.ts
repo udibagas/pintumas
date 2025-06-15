@@ -3,10 +3,12 @@ import prisma from "@/lib/prisma";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const resolvedParams = await params;
+
   try {
-    const postId = parseInt(params.id, 10);
+    const postId = parseInt(resolvedParams.id, 10);
 
     const comments = await prisma.comment.findMany({
       where: { postId: postId },

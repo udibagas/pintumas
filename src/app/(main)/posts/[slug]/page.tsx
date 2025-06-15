@@ -40,13 +40,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
       {/* Main Content */}
       <article className="w-full lg:w-2/3">
-        <h1 className="text-3xl font-bold mb-2">Post Title</h1>
+        <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
         <div className="flex items-center text-sm text-gray-500 mb-4">
           <span>{post.author.name}</span>
           <Divider type="vertical" />
-          <span>{moment(post.createdAt).format('DD-MMM-YYYY HH:mm')}</span>
-          <Divider type="vertical" />
           <span>{post.category.name}</span>
+          <Divider type="vertical" />
+          <span>{moment(post.createdAt).format('DD-MMM-YYYY HH:mm')}</span>
         </div>
         <Image src={post.PostMedia[0].media.url} alt={post.title} className="mb-6" preview={false} />
         <div className="prose max-w-none mb-8">

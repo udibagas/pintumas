@@ -1,12 +1,11 @@
 "use client";
 
 import PageHeader from "@/components/PageHeader";
-import { Post } from "@prisma/client";
 import { Card } from "antd";
 import PostForm from "../PostForm";
+import { PostWithMedia } from "@/types";
 
 export default function CreatePostPage() {
-
   return (
     <>
       <PageHeader
@@ -16,7 +15,7 @@ export default function CreatePostPage() {
       </PageHeader>
 
       <Card>
-        <PostForm values={{} as Post} />
+        <PostForm values={{} as PostWithMedia} />
       </Card>
     </>
   );

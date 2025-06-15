@@ -5,6 +5,7 @@ import {
   Post,
   PostMedia,
   User,
+  Comment,
 } from "@prisma/client";
 import { FormInstance } from "antd";
 import { AxiosError } from "axios";
@@ -74,4 +75,8 @@ export interface CategoryWithRelations extends Category {
 
 export interface CommentWithAuthor extends Comment {
   author: User;
+}
+
+export interface PostWithMedia extends Post {
+  PostMedia: (PostMedia & { media: Media })[];
 }

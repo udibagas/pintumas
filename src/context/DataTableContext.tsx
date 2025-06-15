@@ -19,9 +19,9 @@ interface DataTableContextProps {
     setPageSize: (size: number) => void;
     setSearch: (search: string) => void;
     setFilter: (filter: Record<string, string>) => void;
-    useFetch: <D = any>() => {
+    useFetch: <T>() => {
         isPending: boolean;
-        data: D | undefined;
+        data: T | any;
     };
 }
 

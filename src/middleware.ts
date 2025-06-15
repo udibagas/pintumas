@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export default function middleware(req: NextRequest) {
+  console.log("Middleware triggered for:", req.nextUrl.pathname);
   // // Check if the user is authenticated
   // const session = req.auth;
   // // If not authenticated, redirect to login

@@ -38,7 +38,7 @@ export function DataTableProvider<T extends { id: number | string }>({ url, chil
     [currentPage, pageSize, search, filter]
   );
 
-  function useFetch<D = T[]>() {
+  function useFetch<D>() {
     const { isPending, data } = useQuery({
       queryKey: [url, params],
       queryFn: () => getItems<D>(url, params),
@@ -138,7 +138,7 @@ export function DataTableProvider<T extends { id: number | string }>({ url, chil
       setPageSize,
       setSearch,
       setFilter,
-      useFetch
+      useFetch,
     }}>
       {children}
     </DataTableContext.Provider>

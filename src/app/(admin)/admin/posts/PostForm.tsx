@@ -2,15 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Input, message, Row, Select, Switch, Upload, UploadFile } from "antd";
-import { Category, Department, Media, Post, PostMedia } from "@prisma/client";
+import { Category, Department, Media, Post } from "@prisma/client";
 import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
-import { PaginatedData, ServerErrorResponse } from "@/types";
+import { PaginatedData, PostWithMedia, ServerErrorResponse } from "@/types";
 import client, { createItem, getItems, updateItem } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
-
-interface PostWithMedia extends Post {
-  PostMedia: (PostMedia & { media: Media })[];
-}
 
 export default function PostForm({ values }: { values: PostWithMedia }) {
   const [form] = Form.useForm<PostWithMedia>();
