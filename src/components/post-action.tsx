@@ -6,18 +6,25 @@ import ShareButton from "./share-button";
 import { Post } from "@prisma/client";
 import { Button, Divider } from "antd";
 
-export default function PostAction({ post, setShowComments, showComments }: { post: Post, setShowComments: (show: boolean) => void, showComments: boolean }) {
+export default function PostAction({ post }: { post: Post }) {
   return (
-    <div>
-      <Button type="text" >
-        <EyeOutlined /> {post.viewCount ?? '0'}
+    <div className="flex items-center gap-2">
+      <Button type="text">
+        <span className="text-2xl">
+          <EyeOutlined /> {post.viewCount ?? '0'}
+        </span>
       </Button>
+
       <Divider type="vertical" />
-      <Button type="text" onClick={() => setShowComments(!showComments)} title="Komentar">
-        <CommentOutlined /> {post.commentCount ?? '0'}
+      <Button type="text" title="Komentar">
+        <span className="text-2xl">
+          <CommentOutlined /> {post.commentCount ?? '0'}
+        </span>
       </Button>
+
       <Divider type="vertical" />
       <LikeButton post={post} />
+
       <Divider type="vertical" />
       <ShareButton post={post} />
     </div>

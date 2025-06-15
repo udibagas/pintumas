@@ -36,8 +36,9 @@ export default function LikeButton({ post }: { post: Post }) {
 
   return (
     <Button type="text" onClick={handleLike}>
-      <HeartOutlined /> {" "}
-      {likeCount}
+      <span className="text-2xl">
+        <HeartOutlined />  {likeCount}
+      </span>
     </Button>
   )
 }

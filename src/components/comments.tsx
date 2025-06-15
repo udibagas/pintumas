@@ -28,7 +28,7 @@ export default function Comments({ postId }: { postId: number }) {
 
   return (
     <div className="mt-8">
-      <CommentForm postId={postId} onCommentAdded={(comment) => setComments((prev) => [...prev, comment])} />
+      <CommentForm postId={postId} onCommentAdded={(comment) => setComments((prev) => [comment, ...prev])} />
 
       <div className="mt-4">
         {isPending ? <p className="text-muted-foreground">Memuat komentar...</p> : <CommentList comments={comments} />}

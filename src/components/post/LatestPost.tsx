@@ -1,3 +1,5 @@
+'use client';
+
 import { Row, Col, Card, Typography, Space, Divider, Image } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';

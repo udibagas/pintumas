@@ -37,7 +37,9 @@ export default function ShareButton({ post }: { post: Post }) {
 
   return (
     <Button type="text" onClick={handleShare} title="Bagikan">
-      <ShareAltOutlined onClick={handleShare} />
+      <span className="text-2xl">
+        <ShareAltOutlined onClick={handleShare} />
+      </span>
     </Button>
   )
 }
