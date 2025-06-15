@@ -32,7 +32,8 @@ export default function Sidebar() {
             <Text strong>Ikuti Kami</Text>
           </Space>
         </Divider>
-        <div className="flex gap-2">
+        <div className="text-slate-500 text-sm mb-4">Ikuti kami di sosial media</div>
+        <div className="flex gap-4">
           <Link href="#">
             <FacebookOutlined className="text-4xl" />
           </Link>
