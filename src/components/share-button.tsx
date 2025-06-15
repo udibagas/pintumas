@@ -20,7 +20,7 @@ export default function ShareButton({ post }: { post: Post }) {
           url: postUrl,
         });
       } catch (err: unknown) {
-        console.error("Gagal membagikan link:", err);
+        console.log("Gagal membagikan link:", err);
       }
     } else {
       try {

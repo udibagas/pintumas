@@ -64,7 +64,7 @@ export type ServerErrorResponse = AxiosError & {
 export interface PostWithRelations extends Post {
   author: User;
   category: Category;
-  department: Department;
+  department?: Department | null;
   PostMedia?: (PostMedia & { media: Media })[];
 }
 

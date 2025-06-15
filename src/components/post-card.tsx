@@ -7,10 +7,10 @@ import Link from "next/link";
 import { useState } from "react";
 import PostAction from "./post-action";
 import { ArrowRight } from "lucide-react";
-import { Category, Media, Post, User } from "@prisma/client";
+import { PostWithRelations } from "@/types";
 
 interface PostCardProps {
-  post: Post & { author: User, category: Category, media: Media[] };
+  post: PostWithRelations;
   detail?: boolean;
 }
 
@@ -41,8 +41,8 @@ export default function PostCard({ post, detail = false }: PostCardProps) {
         </CardHeader>
         <CardContent>
           <div className="grid gap-8 grid-cols-2">
-            {(post.media?.length ?? 0) > 0 && <div className="mb-4">
-              {post.media?.map((media) => (
+            {(post.PostMedia?.length ?? 0) > 0 && <div className="mb-4">
+              {post.PostMedia?.map(({ media }) => (
                 media.type === "IMAGE" && (
                   <Image
                     key={media.id}

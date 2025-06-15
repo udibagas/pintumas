@@ -19,8 +19,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     where: { slug: data.slug },
     include: {
       author: true,
-      media: true,
-      category: true
+      PostMedia: { include: { media: true } },
+      category: true,
+      department: true,
     }
   })
 

@@ -11,7 +11,7 @@ export async function GET() {
         PostMedia: { include: { media: true } },
       },
       orderBy: { published: "desc" },
-      take: 4,
+      take: 6,
       where: { published: true },
     });
 

@@ -33,14 +33,15 @@ export default function PopularPost() {
             key={post.id}
             extra={<Image
               preview={false}
-              width={120}
+              width={150}
               alt={post.title}
               src={post.PostMedia?.[0].media.url}
-              fallback={`https://picsum.photos/600/400?random=${post.id}`}
+              fallback={`https://picsum.photos/150/150?random=${post.id}`}
+              className="rounded object-cover"
             />}
           >
             <List.Item.Meta
-              title={<Link href={`/posts/${post.slug}`}>{post.title}</Link>}
+              title={<Link href={`/posts/${post.slug}`} className="line-clamp-1">{post.title}</Link>}
               description={(
                 <>
                   <EyeOutlined />
@@ -54,7 +55,9 @@ export default function PopularPost() {
                 </>
               )}
             />
-            {post.excerpt}
+            <div className="line-clamp-2">
+              {post.excerpt}
+            </div>
           </List.Item>
         )}
       />
