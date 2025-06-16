@@ -22,7 +22,7 @@ export default function DataTable<T extends { id: number | string }>({ columns, 
   return (
     <Table
       showHeader={showHeader}
-      scroll={{ y: 'calc(100vh - 260px)' }}
+      scroll={{ y: 'calc(100vh - 310px)' }}
       loading={isPending}
       size="small"
       columns={columns}

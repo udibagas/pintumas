@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   const filePath = path.join(uploadsDir + dir, fileName);
   await fs.writeFile(filePath, buffer);
 
-  const url = `/uploads/${dir}/${fileName}`;
+  const url = `/uploads${dir}/${fileName}`;
 
   // Optionally, get image dimensions if needed (requires extra library)
   let width = null;

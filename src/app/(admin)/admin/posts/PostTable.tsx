@@ -1,9 +1,8 @@
 'use client';
 
 import React from "react";
-import { Avatar, Divider, Image, Input, Switch, Tag } from "antd";
+import { Avatar, Card, Divider, Image, Input, Switch, Tag } from "antd";
 import { ApartmentOutlined, ClockCircleOutlined, CommentOutlined, EyeOutlined, LikeOutlined, ReloadOutlined, TagsOutlined, UserOutlined } from "@ant-design/icons";
-import PageHeader from "@/components/PageHeader";
 import ActionButton from "@/components/buttons/ActionButton";
 import { Category, Department, Media, Post, PostMedia, User } from "@prisma/client";
 import Link from "next/link";
@@ -70,23 +69,22 @@ export default function PostTable() {
   ];
 
   return (
-    <>
-      <PageHeader
-        title="Kelola Post"
-        subtitle="Kelola kontent untuk aplikasi Anda."
-      >
-        <Input.Search
-          placeholder="Cari post..."
-          className="w-64"
-          allowClear
-          onSearch={(value) => {
-            setCurrentPage(1)
-            setSearch(value)
-          }} />
-      </PageHeader>
-
+    <Card title={
+      <div className="py-3">
+        <h3 className="text-xl">Kelola Post</h3>
+        <div className="text-gray-600 text-xs">Kelola kontent untuk aplikasi Anda.</div>
+      </div>
+    } extra={
+      <Input.Search
+        placeholder="Cari post..."
+        className="w-64"
+        allowClear
+        onSearch={(value) => {
+          setCurrentPage(1)
+          setSearch(value)
+        }} />}>
       <DataTable<Post> columns={columns} />
-    </>
+    </Card>
   );
 };
 
