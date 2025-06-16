@@ -62,7 +62,7 @@ export default function PostForm({ values }: { values: PostWithMedia }) {
   useEffect(() => {
     if (values) {
       form.setFieldsValue(values);
-      setMedia(values.PostMedia.map(m => m.media));
+      setMedia(values.PostMedia?.map(m => m.media) ?? []);
     } else {
       form.resetFields();
     }
