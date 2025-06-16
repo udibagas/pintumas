@@ -2,27 +2,42 @@
 
 import React from "react";
 import PageHeader from "@/components/PageHeader";
-import AddButton from "@/components/buttons/AddButton";
 import { Media } from "@prisma/client";
 import { useDataTableContext } from "@/hooks/useDataTable";
 import { PaginatedData } from "@/types";
-import { Image, Pagination } from "antd";
+import { Image, Pagination, Radio } from "antd";
+import { UnorderedListOutlined, AppstoreOutlined } from "@ant-design/icons";
 
 export default function MediaList() {
-  const { handleAdd, useFetch, setCurrentPage, setPageSize, pageSize } = useDataTableContext()
-  const { isPending, data }: { isPending: boolean, data: PaginatedData<Media> } = useFetch<PaginatedData<Media>>();
-
   return (
     <>
       <PageHeader
         title="Kelola Media"
         subtitle="Kelola media untuk digunakan dalam postingan Anda."
       >
-        <AddButton label="Upload Media" onClick={handleAdd} />
+        <Radio.Group
+          block
+          defaultValue="grid"
+          optionType="button"
+          options={[
+            { label: <AppstoreOutlined />, value: 'grid' },
+            { label: <UnorderedListOutlined />, value: 'list' },
+          ]}
+        />
       </PageHeader>
 
-      {/* <DataTable<Category> columns={columns} /> */}
+      <GridView />
 
+    </>
+  );
+};
+
+function GridView() {
+  const { useFetch, setCurrentPage, setPageSize, pageSize } = useDataTableContext()
+  const { isPending, data }: { isPending: boolean, data: PaginatedData<Media> } = useFetch<PaginatedData<Media>>();
+
+  return (
+    <>
       <div className="mt-6">
         {isPending && <div>Loading...</div>}
         {!isPending && (
@@ -59,4 +74,26 @@ export default function MediaList() {
       </div>
     </>
   );
-};
+}
+
+function ListView({ media }: { media: Media[] }) {
+  return (
+    <div className="space-y-4">
+      {media.map((item) => (
+        <div key={item.id} className="flex items-center gap-4">
+          <Image
+            src={item.url}
+            alt={item.filename}
+            width={100}
+            height={100}
+            className="object-cover rounded-lg"
+          />
+          <div className="flex flex-col">
+            <span className="font-semibold">{item.filename}</span>
+            <span className="text-sm text-gray-500">{item.size} bytes</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

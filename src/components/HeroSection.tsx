@@ -23,7 +23,7 @@ export default function HeroSection() {
     <section className="container mx-auto mt-8 p-4">
       <Carousel autoplay arrows>
         {posts.map((item) => (
-          <div key={item.id} className="bg-yellow-600">
+          <div key={item.id} className="bg-[#E6DABA]">
             <div className="grid md:grid-cols-2 grid-cols-1 gap-8">
               <Image preview={false} alt="featured news" src={item.PostMedia?.[0].media.url} />
               <div className="flex flex-col justify-center">
