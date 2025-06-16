@@ -1,14 +1,21 @@
 'use client';
 
-import React from "react";
+import React, { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { Media } from "@prisma/client";
 import { useDataTableContext } from "@/hooks/useDataTable";
 import { PaginatedData } from "@/types";
 import { Image, Pagination, Radio } from "antd";
 import { UnorderedListOutlined, AppstoreOutlined } from "@ant-design/icons";
+import DataTable from "@/components/DataTable";
+import moment from "moment";
+import { humanFileSize } from "@/lib/utils";
 
 export default function MediaList() {
+  const { useFetch, setCurrentPage, setPageSize, pageSize } = useDataTableContext()
+  const { isPending, data }: { isPending: boolean, data: PaginatedData<Media> } = useFetch<PaginatedData<Media>>();
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
+
   return (
     <>
       <PageHeader
@@ -17,25 +24,37 @@ export default function MediaList() {
       >
         <Radio.Group
           block
-          defaultValue="grid"
+          onChange={(e) => setViewMode(e.target.value as 'grid' | 'list')}
+          defaultValue="list"
           optionType="button"
           options={[
-            { label: <AppstoreOutlined />, value: 'grid' },
             { label: <UnorderedListOutlined />, value: 'list' },
+            { label: <AppstoreOutlined />, value: 'grid' },
           ]}
         />
       </PageHeader>
 
-      <GridView />
+      {viewMode == 'grid' ? <GridView
+        isPending={isPending}
+        data={data}
+        pageSize={pageSize}
+        setCurrentPage={setCurrentPage}
+        setPageSize={setPageSize}
+      /> : <ListView />}
 
     </>
   );
 };
 
-function GridView() {
-  const { useFetch, setCurrentPage, setPageSize, pageSize } = useDataTableContext()
-  const { isPending, data }: { isPending: boolean, data: PaginatedData<Media> } = useFetch<PaginatedData<Media>>();
+interface GridViewProps {
+  isPending: boolean;
+  data: PaginatedData<Media>;
+  pageSize: number;
+  setCurrentPage: (page: number) => void;
+  setPageSize: (size: number) => void;
+}
 
+function GridView({ isPending, data, pageSize, setCurrentPage, setPageSize }: GridViewProps) {
   return (
     <>
       <div className="mt-6">
@@ -76,24 +95,51 @@ function GridView() {
   );
 }
 
-function ListView({ media }: { media: Media[] }) {
-  return (
-    <div className="space-y-4">
-      {media.map((item) => (
-        <div key={item.id} className="flex items-center gap-4">
+function ListView() {
+  const columns = [
+    {
+      title: "Media",
+      key: "url",
+      render: (_text: string, record: Media) => (
+        <div className="flex items-center gap-4">
           <Image
-            src={item.url}
-            alt={item.filename}
-            width={100}
-            height={100}
-            className="object-cover rounded-lg"
+            width={80}
+            height={80}
+            className="rounded-md object-cover"
+            src={record.url}
+            alt={record.filename}
           />
-          <div className="flex flex-col">
-            <span className="font-semibold">{item.filename}</span>
-            <span className="text-sm text-gray-500">{item.size} bytes</span>
-          </div>
+          <span>{record.filename}</span>
         </div>
-      ))}
-    </div>
+      ),
+    },
+    {
+      title: "Jenis",
+      dataIndex: "type",
+      key: "type",
+      width: 100,
+    },
+    {
+      title: "Ukuran",
+      dataIndex: "size",
+      key: "size",
+      width: 100,
+      render: (text: string, record: Media) => (
+        <span>{humanFileSize(record.size ?? 0)}</span>
+      ),
+    },
+    {
+      title: "Diupload",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      width: 150,
+      render: (text: string, record: Media) => (
+        <span>{moment(record.createdAt).format('DD-MMM-YY HH:mm')}</span>
+      ),
+    },
+  ];
+
+  return (
+    <DataTable<Media> columns={columns} />
   );
 }
