@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Input } from "antd";
 
-export default function Header() {
+export default function MainHeader() {
   return (
     <header className="bg-gray-900 shadow text-white">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
