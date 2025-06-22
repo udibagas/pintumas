@@ -80,3 +80,7 @@ export interface CommentWithAuthor extends Comment {
 export interface PostWithMedia extends Post {
   PostMedia: (PostMedia & { media: Media })[];
 }
+
+export interface DepartmentWithMedia extends Department {
+  media?: Media | null;
+}

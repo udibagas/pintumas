@@ -1,13 +1,22 @@
 "use client";
 
-import React from "react";
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, Upload, Button } from "antd";
 import CancelButton from "@/components/buttons/CancelButton";
 import SaveButton from "@/components/buttons/SaveButton";
-import { CustomFormProps } from "@/types";
-import { Department } from "@prisma/client";
+import { CustomFormProps, DepartmentWithMedia } from "@/types";
+import { UploadOutlined } from "@ant-design/icons";
+import client from "@/lib/api-client";
 
-const DepartmentForm: React.FC<CustomFormProps<Department>> = ({ visible, isEditing, onCancel, onOk, errors, form }) => {
+const DepartmentForm: React.FC<CustomFormProps<DepartmentWithMedia>> = ({ visible, isEditing, onCancel, onOk, errors, form }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e[0].response.file;
+    }
+
+    return e && e.fileList;
+  };
+
   return (
     <Modal
       width={450}
@@ -34,6 +43,10 @@ const DepartmentForm: React.FC<CustomFormProps<Department>> = ({ visible, isEdit
           <Input />
         </Form.Item>
 
+        <Form.Item name="mediaId" hidden>
+          <Input />
+        </Form.Item>
+
         <Form.Item
           label="Nama"
           name="name"
@@ -50,6 +63,47 @@ const DepartmentForm: React.FC<CustomFormProps<Department>> = ({ visible, isEdit
           help={errors.description?.join(", ")}
         >
           <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Link"
+          name="link"
+          validateStatus={errors.link ? "error" : ""}
+          help={errors.link?.join(", ")}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item name="file" label="Gambar" valuePropName="fileList" getValueFromEvent={normFile}>
+          <Upload
+            name="file"
+            listType="picture"
+            action='/api/media'
+            accept="image/*"
+            withCredentials
+            defaultFileList={form.getFieldValue('media') ? [{
+              uid: form.getFieldValue('media').id.toString(),
+              name: form.getFieldValue('media').filename,
+              status: 'done',
+              url: form.getFieldValue('media').url,
+              response: form.getFieldValue('media'),
+            }] : []}
+            onChange={({ file }) => {
+              if (file.status === 'done') {
+                console.log('File uploaded successfully:', file);
+                form.setFieldValue('mediaId', file.response?.id || null);
+              }
+            }}
+            onRemove={async (file) => {
+              console.log('Removing file:', file);
+              const id = file.response?.id;
+              if (!id) return;
+              await client.delete(`/api/media/${id}`);
+              form.setFieldValue('mediaId', null);
+            }}
+          >
+            <Button icon={<UploadOutlined />}>Pilih File</Button>
+          </Upload>
         </Form.Item>
       </Form>
     </Modal>

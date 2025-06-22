@@ -9,6 +9,8 @@ import ActionButton from "@/components/buttons/ActionButton";
 import { Department } from "@prisma/client";
 import { useDataTableContext } from "@/hooks/useDataTable";
 import DataTable from "@/components/DataTable";
+import Image from "next/image";
+import { DepartmentWithMedia } from "@/types";
 
 export default function DepartmentTable() {
   const {
@@ -27,8 +29,24 @@ export default function DepartmentTable() {
 
   const columns = [
     { title: "No.", key: "id", width: 60, render: (_: string, __: Department, index: number) => index + 1 },
+    {
+      title: "Logo",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
+      width: 100,
+      align: "center" as const,
+      render: (_: string, record: DepartmentWithMedia) => {
+        return record.media ? <Image src={record.media.url} alt="Logo" width={50} height={50} style={{ height: 'auto' }} /> : null;
+      }
+    },
     { title: "Nama", dataIndex: "name", key: "name" },
     { title: "Keterangan", dataIndex: "description", key: "description" },
+    {
+      title: "Link",
+      dataIndex: "link",
+      key: "link",
+      render: (link: string) => link ? <a href={link} target="_blank" rel="noopener noreferrer">{link}</a> : '-'
+    },
     {
       title: <ReloadOutlined onClick={refreshData} />,
       key: "action",
@@ -49,16 +67,16 @@ export default function DepartmentTable() {
         <AddButton label="Tambah Departemen" onClick={handleAdd} />
       </PageHeader>
 
-      <DataTable<Department> columns={columns} />
+      <DataTable<DepartmentWithMedia> columns={columns} />
 
-      <DepartmentForm
+      {showForm && <DepartmentForm
         visible={showForm}
         isEditing={isEditing}
         onCancel={handleModalClose}
         onOk={handleSubmit}
         errors={errors}
         form={form}
-      />
+      />}
     </>
   );
 };

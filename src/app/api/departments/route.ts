@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * pageSize;
     const [rows, total] = await Promise.all([
       prisma.department.findMany({
+        include: { media: true },
         orderBy: { name: "asc" },
         take: pageSize,
         skip,

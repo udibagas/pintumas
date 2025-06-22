@@ -17,9 +17,12 @@ model Department {
   id          Int     @id @default(autoincrement())
   name        String  @unique
   description String?
+  link        String? // Optional link to department page
+  media       Media?  @relation(fields: [mediaId], references: [id]) // Optional image for department
 
-  posts Post[]
-  users User[]
+  posts   Post[]
+  users   User[]
+  mediaId Int?
 }
 
 model User {
@@ -100,20 +103,21 @@ model PostLike {
 
 // New: Media attachments (images, videos, PDFs, etc.)
 model Media {
-  id        Int         @id @default(autoincrement())
-  url       String // Cloud URL (S3, Cloudinary, etc.)
-  filename  String // Original filename
-  caption   String? // Optional caption for media
-  type      MediaType
-  width     Int? // For images/videos
-  height    Int? // For images/videos
-  duration  Int? // For videos (in seconds)
-  format    String? // e.g., "jpg", "mp4", "pdf"
-  size      Int? // File size in bytes
-  author    User?       @relation(fields: [authorId], references: [id])
-  authorId  String?
-  createdAt DateTime    @default(now())
-  PostMedia PostMedia[]
+  id         Int          @id @default(autoincrement())
+  url        String // Cloud URL (S3, Cloudinary, etc.)
+  filename   String // Original filename
+  caption    String? // Optional caption for media
+  type       MediaType
+  width      Int? // For images/videos
+  height     Int? // For images/videos
+  duration   Int? // For videos (in seconds)
+  format     String? // e.g., "jpg", "mp4", "pdf"
+  size       Int? // File size in bytes
+  author     User?        @relation(fields: [authorId], references: [id])
+  authorId   String?
+  createdAt  DateTime     @default(now())
+  PostMedia  PostMedia[]
+  Department Department[]
 }
 
 model PostMedia {
