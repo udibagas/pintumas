@@ -120,6 +120,13 @@ export default function PostForm({ values }: { values: PostWithMedia }) {
               action='/api/media'
               accept="image/*, application/*"
               withCredentials
+              defaultFileList={values.PostMedia?.map((m) => ({
+                uid: m.media.id.toString(),
+                name: m.media.filename,
+                status: 'done',
+                url: m.media.url,
+                response: m.media,
+              }))}
               onChange={({ file }) => {
                 if (file.status === 'done') {
                   console.log('File uploaded successfully:', file);
